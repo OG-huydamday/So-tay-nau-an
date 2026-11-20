@@ -8,7 +8,7 @@ Ngày cập nhật 20/11/2026 · Phiên bản 1.3 · Lịch tiếp tục 21/11�
 
 Xây dựng website sổ tay công thức nấu ăn cộng đồng theo Đề 3. Người dùng tìm món theo tên hoặc nguyên liệu đang có, chia sẻ công thức có ảnh, đánh giá món, lưu yêu thích, lập thực đơn tuần và tổng hợp danh sách đi chợ. Admin kiểm duyệt nội dung và quản lý loại món.
 
-Tài liệu này là bản kế hoạch thống nhất để giao việc, triển khai và nghiệm thu. Các quyết định tại đây thay thế phương án tương ứng trong các tài liệu `TEAM.md`, `API.md`, `ARCHITECTURE.md` và `DESIGN.md` cũ. Khi đổi một quyết định, cập nhật bản này trong cùng PR với thay đổi liên quan.
+Tài liệu này là bản kế hoạch thống nhất để giao việc, triển khai và nghiệm thu. Dùng [bản kickoff](Ke%20hoạch.md) để giới thiệu với nhóm và [wireframe](DESIGN.md) để tham khảo bố cục. Khi đổi một quyết định, cập nhật bản này trong cùng PR với thay đổi liên quan.
 
 Lịch tiếp tục gồm 25 ngày từ 21/11 đến 15/12/2026, dự kiến 2–3 giờ/người/ngày. Ngày 21/11, nhóm kiểm kê phần đã hoàn thành và nhận việc còn thiếu. Mục tiêu đủ chức năng bắt buộc vào 09/12. Ngày 10–12/12 dành cho triển khai và kiểm thử, ngày 13–15/12 dành cho dự phòng, báo cáo và bàn giao.
 
@@ -124,7 +124,7 @@ flowchart TD
 | RecipeContent | `title`, `summary`, `image`, `category`, `prepMinutes`, `cookMinutes`, `difficulty`, `servings`, `ingredients[]`, `steps[]`, `tags[]`. Dùng cùng schema cho draft/published. |
 | Review | `recipe`, `user`, `stars` nguyên 1–5, `comment`, `commentStatus`, thời gian. Unique index `recipe + user`. |
 | Category | `name`, `slug` duy nhất, icon tùy chọn. Chặn xóa nếu draft hoặc published còn tham chiếu. |
-| Upload | Người upload, đường dẫn hoặc provider key, MIME đã xác minh, kích thước, thời gian tạo. |
+| Upload | Người upload, đường dẫn hoặc provider key, MIME đã xác minh, kích thước, thời gian tạo. Tối đa 5 MB, JPEG/PNG/WebP. Kiểm chữ ký file, đổi tên ngẫu nhiên và kiểm quyền sử dụng ảnh khi ghi công thức. |
 | WeeklyMenu | `user`, `weekStart`, `version`, `meals[]`. Unique index `user + weekStart`. |
 
 `weekStart` là chuỗi ngày thứ Hai dạng `YYYY-MM-DD`, tính theo múi giờ Asia/Bangkok. Mỗi meal gồm `day` 0–6, `slot` breakfast/lunch/dinner và `items[]`. Mỗi item có `recipeId`, `servings`, cùng snapshot tên món, ảnh, khẩu phần gốc, nguyên liệu và thời gian lấy snapshot. Mỗi ô tối đa 5 món, chặn trùng món trong cùng một ô, UI cho đổi khẩu phần món đã có.

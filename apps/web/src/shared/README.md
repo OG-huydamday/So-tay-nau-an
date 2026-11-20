@@ -1,3 +1,3 @@
 # Thành phần dùng chung
 
-A quản lý lớp thiết kế và các thành phần dùng chung như nút, trường form, thẻ công thức, trạng thái tải/rỗng/lỗi. B dựng HTTP client chung và xử lý `401`. C dùng lại thẻ công thức và xử lý trạng thái riêng của thực đơn trong module của mình.
+P3 quản lý thiết kế, nút, trường form và các trạng thái tải, rỗng, lỗi. P1 dựng HTTP client chung và xử lý `401`. P2 và P3 thống nhất dữ liệu của thẻ công thức để dùng ở trang khám phá và thực đơn.

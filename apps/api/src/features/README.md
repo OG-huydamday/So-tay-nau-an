@@ -4,8 +4,8 @@ Mỗi thư mục sở hữu router và phần xử lý của một nhóm nghiệ
 
 | Thư mục | Người phụ trách |
 | --- | --- |
-| `catalog` | A · công thức và danh mục công khai |
-| `auth`, `community`, `admin` | B · tài khoản, đánh giá/bình luận, quản trị |
-| `planner` | C · thực đơn, lưu món, dữ liệu đi chợ |
+| `auth`, `reviews` | P1 · tài khoản, đánh giá, bình luận và xếp hạng |
+| `catalog`, `uploads` | P2 · công thức, kiểm duyệt công thức, loại món và ảnh |
+| `planner` | P3 · thực đơn, lưu món và dữ liệu đi chợ |
 
-Ngày ghép module, B nối MongoDB cho server và đăng ký các router trong `../app.js`. Các luồng và cấu trúc dữ liệu xem [hợp đồng API](../../../../docs/API.md).
+P1 nối MongoDB và phối hợp đăng ký các router trong `../app.js`. Các thư mục `community` và `admin` trong bộ khung là vị trí sơ bộ. Xem [hợp đồng API đích](../../../../docs/KE-HOACH-TONG-THE-BEP-NHA.md#7-hợp-đồng-api-chốt-cho-nhóm).
