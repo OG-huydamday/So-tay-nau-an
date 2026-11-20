@@ -1,0 +1,36 @@
+{
+  "loginSuccess": {
+    "user": { "id": "user-demo", "name": "Thành viên mẫu", "email": "demo@example.test", "role": "member" }
+  },
+  "loginError": { "code": "INVALID_CREDENTIALS", "message": "Email hoặc mật khẩu chưa đúng." },
+  "recipeList": {
+    "items": [
+      { "id": "recipe-demo", "title": "Trứng chiên cà chua", "summary": "Món trứng đơn giản cho bữa tối.", "image": null, "category": { "id": "category-demo", "name": "Món chính" }, "prepMinutes": 5, "cookMinutes": 10, "difficulty": "Dễ", "servings": 2, "ratingAverage": 0, "ratingCount": 0 }
+    ],
+    "page": 1,
+    "limit": 10,
+    "total": 1
+  },
+  "recipeDetail": {
+    "id": "recipe-demo",
+    "title": "Trứng chiên cà chua",
+    "summary": "Món trứng đơn giản cho bữa tối.",
+    "image": null,
+    "category": { "id": "category-demo", "name": "Món chính" },
+    "prepMinutes": 5,
+    "cookMinutes": 10,
+    "difficulty": "Dễ",
+    "servings": 2,
+    "ratingAverage": 0,
+    "ratingCount": 0,
+    "ingredients": [{ "name": "trứng", "quantity": 2, "unit": "quả" }],
+    "steps": [{ "order": 1, "text": "Đánh trứng và trộn cùng cà chua đã thái.", "image": null }]
+  },
+  "weeklyMenu": {
+    "weekStart": "2026-11-23",
+    "version": 1,
+    "meals": [
+      { "day": 0, "slot": "dinner", "items": [{ "recipeId": "recipe-demo", "servings": 2, "snapshot": { "title": "Trứng chiên cà chua", "image": null, "servings": 2, "ingredients": [{ "name": "trứng", "quantity": 2, "unit": "quả" }], "capturedAt": "2026-11-23T00:00:00.000Z" } }] }
+    ]
+  }
+}
