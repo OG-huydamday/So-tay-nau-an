@@ -16,7 +16,7 @@ Mục tiêu bàn giao là bản MVP đủ yêu cầu, có đường dẫn chạy
 
 ## 2. Điểm xuất phát và thay đổi cần thực hiện
 
-Đã kiểm tra repo ngày 17/11/2026. Hiện có npm workspaces, React/Vite, Express, cấu hình MongoDB, các model sơ bộ, middleware xác thực và lỗi, một phép gộp nguyên liệu có unit test, workflow lint/build/test. Web hiện là trang khởi động. API đang có `/api/health`, server chưa kết nối MongoDB. Các thư mục tính năng đang là chỗ trống. Toàn bộ file dự án hiện còn untracked trong Git.
+Khi bắt đầu triển khai ngày 21/11/2026, repo có npm workspaces, React/Vite, Express, cấu hình MongoDB, các model sơ bộ, middleware xác thực và lỗi, một phép gộp nguyên liệu có unit test, workflow lint/build/test. Web hiện là trang khởi động. API đang có `/api/health`, server chưa kết nối MongoDB. Các thư mục tính năng đang là chỗ trống.
 
 Thiết kế dưới đây là trạng thái đích. Những luồng nghiệp vụ, tên file và endpoint mô tả trong tài liệu cần được nhóm triển khai theo lịch.
 
@@ -37,7 +37,7 @@ Model cũ chỉ nên được thay thế sau khi kiểm tra có dữ liệu cầ
 
 | Người | Sở hữu chính | Phối hợp và trách nhiệm chung |
 | --- | --- | --- |
-| P1 — Bạn, lead | Auth, database bootstrap, review sao/bình luận, kiểm duyệt bình luận, bảng xếp hạng | Quản lý tích hợp, môi trường, phát hành. Dành 25–30% thời gian cho review và gỡ vướng. |
+| P1 — Trưởng nhóm | Auth, database bootstrap, review sao/bình luận, kiểm duyệt bình luận, bảng xếp hạng | Quản lý tích hợp, môi trường, phát hành. Dành 25–30% thời gian cho review và gỡ vướng. |
 | P2 — Thành viên công thức | Catalog, tìm kiếm, chi tiết, đăng/sửa/xóa, upload, duyệt công thức và quản lý loại món | Dựng UI form và màn quản trị công thức theo component chung. Sở hữu mẫu dữ liệu công thức. |
 | P3 — Thành viên giao diện và thực đơn | Layout, component chung, màn khám phá/đăng nhập, favorites, planner và shopping list | Sở hữu UI/Redux và API của thực đơn/yêu thích. P1 hỗ trợ phần server khó sau khi auth ổn định. |
 

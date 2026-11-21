@@ -8,4 +8,4 @@ Mỗi thư mục sở hữu router và phần xử lý của một nhóm nghiệ
 | `catalog`, `uploads` | P2 · công thức, kiểm duyệt công thức, loại món và ảnh |
 | `planner` | P3 · thực đơn, lưu món và dữ liệu đi chợ |
 
-P1 nối MongoDB và phối hợp đăng ký các router trong `../app.js`. Các thư mục `community` và `admin` trong bộ khung là vị trí sơ bộ. Xem [hợp đồng API đích](../../../../docs/KE-HOACH-TONG-THE-BEP-NHA.md#7-hợp-đồng-api-chốt-cho-nhóm).
+P1 nối MongoDB và phối hợp đăng ký các router trong `../app.js`. Xem [hợp đồng API đích](../../../../docs/KE-HOACH-TONG-THE-BEP-NHA.md#7-hợp-đồng-api-chốt-cho-nhóm).
