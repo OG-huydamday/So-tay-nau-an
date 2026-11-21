@@ -1,6 +1,6 @@
 # Sổ tay công thức nấu ăn
 
-Đề 3 — Website chia sẻ công thức, tìm món từ nguyên liệu đang có và lên thực đơn tuần. API kết nối MongoDB, hỗ trợ đăng nhập tài khoản demo và kiểm tra phiên bằng cookie. Web hiện có trang khởi động.
+Đề 3 — Website chia sẻ công thức, tìm món từ nguyên liệu đang có và lên thực đơn tuần. API kết nối MongoDB, hỗ trợ đăng nhập bằng cookie và trả danh sách công thức công khai. Web có trang chủ, thẻ công thức mẫu và form đăng nhập.
 
 ## Bắt đầu
 
@@ -14,6 +14,7 @@ if (!(Test-Path -LiteralPath .env)) {
 }
 docker compose up -d --wait mongo
 npm run seed:accounts
+npm run seed:catalog -w @bep-nha/api
 npm run dev
 ```
 
@@ -25,12 +26,15 @@ Seed tạo `demo@example.test` (member) và `admin@example.test` (admin). Lần 
 
 Form P3 gửi JSON `{email,password}` đến `POST /api/auth/login` qua proxy Vite. Đăng nhập đúng trả `200 {user:{id,name,email,role}}` cùng cookie phiên HttpOnly có hạn 8 giờ. Sai thông tin trả `401` theo fixture `loginError`. Với yêu cầu ghi sau đăng nhập, đọc cookie `csrf` và gửi giá trị trong header `X-CSRF-Token`.
 
+Trang chủ hiển thị thẻ món từ `docs/fixtures/kickoff.json`. API `GET /api/recipes?page=1&limit=10` trả danh sách thực từ MongoDB, với tối đa 48 món mỗi trang. Seed danh mục tạo 5 loại và 11 món ở nhiều trạng thái để thử điều kiện hiển thị.
+
 Để chạy ca kiểm thử HTTP với MongoDB thật, đặt hai biến mật khẩu demo trong `.env` khớp với tài khoản đã seed rồi chạy trên PowerShell.
 
 ```powershell
 $env:TEST_DEMO_LOGIN = '1'
+$env:TEST_DEMO_CATALOG = '1'
 npm test
-Remove-Item Env:TEST_DEMO_LOGIN
+Remove-Item Env:TEST_DEMO_LOGIN, Env:TEST_DEMO_CATALOG
 ```
 
 Nhóm cũng có thể dùng một MongoDB replica set dành riêng cho phát triển qua `MONGODB_URI`. Replica set phục vụ giao dịch ghi đánh giá và cập nhật điểm trung bình. Giữ `.env` và thông tin kết nối ở máy của từng người.

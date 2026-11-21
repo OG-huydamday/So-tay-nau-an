@@ -6,11 +6,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   async function login(email, password) {
-    const endpoint = import.meta.env.VITE_LOGIN_PATH;
-    if (!endpoint)
-      throw new Error(
-        "Bản giao diện chưa kết nối dịch vụ đăng nhập. Bạn vẫn có thể khám phá trang chủ.",
-      );
+    const endpoint = import.meta.env.VITE_LOGIN_PATH || "/api/auth/login";
     if (
       !endpoint.startsWith("/") ||
       endpoint.startsWith("//") ||

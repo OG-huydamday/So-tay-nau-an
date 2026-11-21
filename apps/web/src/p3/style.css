@@ -557,3 +557,20 @@ section[id] {
   font-family: Arial, sans-serif;
   letter-spacing: normal;
 }
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 23rem));
+  gap: 1.25rem;
+}
+.recipe-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fffdf7;
+}
+.recipe-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.recipe-body { padding: 1.5rem; }
+.recipe-body > span { color: var(--accent); font-weight: 700; }
+.recipe-body h3 { margin: .5rem 0; font: bold 1.6rem/1.2 Georgia, serif; }
+.recipe-body p { margin: .75rem 0 0; }
+.recipe-meta { padding-top: .75rem; border-top: 1px solid var(--line); color: var(--muted); }

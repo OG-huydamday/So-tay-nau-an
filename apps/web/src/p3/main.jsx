@@ -11,6 +11,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth";
+import { RecipeCards } from "../features/catalog/RecipeCards";
+import fixture from "../../../../docs/fixtures/kickoff.json";
 import "./style.css";
 
 const paths = {
@@ -51,6 +53,7 @@ function Brand() {
   );
 }
 const sections = [
+  ["cong-thuc", "Công thức"],
   ["loi-ich", "Lợi ích"],
   ["tinh-nang", "Tính năng"],
   ["faq", "Hỏi đáp"],
@@ -123,7 +126,7 @@ function Hero() {
           Từ vài nguyên liệu sẵn trong tủ lạnh đến thực đơn cả tuần, tìm cảm
           hứng cho từng bữa cơm nhà.
         </p>
-        <Link className="btn shine" to="/?muc=tinh-nang">
+        <Link className="btn shine" to="/?muc=cong-thuc">
           Khám phá sổ tay <Icon name="arrow" />
         </Link>
       </div>
@@ -263,6 +266,7 @@ function Home() {
   return (
     <>
       <Hero />
+      <RecipeCards items={fixture.recipeList.items} />
       <Benefits />
       <Features />
       <section className="wrap cta shine">
