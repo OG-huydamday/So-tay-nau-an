@@ -1,6 +1,6 @@
 # Kế hoạch khởi động đồ án sổ tay công thức nấu ăn
 
-**Thời gian tiếp tục 21/11–15/12/2026.** Nhóm dự kiến dành 2–3 giờ/người/ngày. Mốc nội bộ là **09/12 có đủ chức năng bắt buộc chạy cùng nhau**. Hẹn 30 phút cho buổi đầu để kiểm kê phần đã làm, chạy bộ khung và chốt việc của từng người.
+Nhóm có 15 ngày từ 21/11 đến 05/12/2026, dự kiến 2–3 giờ/người/ngày. Mục tiêu ngày 02/12 là chạy đủ chức năng bắt buộc trên main. Ngày 03–04/12 dành cho triển khai, kiểm thử và sửa lỗi. Ngày 05/12 nghiệm thu và bàn giao.
 
 ## Mục tiêu sản phẩm
 
@@ -29,11 +29,10 @@ Giao diện đặt trong `apps/web` với React/Vite. API đặt trong `apps/api
 
 | Mốc | Kết quả cần thấy |
 | --- | --- |
-| **21/11** | Cả ba chạy bộ khung, chốt phân vai và nhận việc đầu tiên. |
-| **26/11** | Đăng nhập tài khoản mẫu, tìm món và mở chi tiết từ dữ liệu thật. |
-| **03/12** | Đăng công thức có ảnh, duyệt công thức và thử đánh giá. |
-| **09/12** | Chạy đủ chức năng bắt buộc trên `main`, gồm thực đơn và danh sách đi chợ. |
-| **10–12/12** | Tích hợp, kiểm thử chéo và sửa lỗi từ bản demo. |
-| **13–15/12** | Dự phòng và tập demo. Bàn giao mã nguồn, hướng dẫn chạy, bản demo và báo cáo ngày 15/12. |
+| **21–23/11** | Đăng nhập, tìm và mở món từ dữ liệu thật. |
+| **24–27/11** | Tìm theo nguyên liệu, đăng món có ảnh, duyệt và đánh giá. |
+| **28/11–02/12** | Hoàn tất quản trị, yêu thích, thực đơn và đi chợ trên main. |
+| **03–04/12** | Triển khai, kiểm thử chéo, sửa lỗi và tập demo. |
+| **05/12** | Nghiệm thu và bàn giao mã nguồn, hướng dẫn, báo cáo và demo. |
 
 Xem [kế hoạch tổng thể](KE-HOACH-TONG-THE-BEP-NHA.md) để tra lịch từng ngày, hợp đồng API và ca nghiệm thu. Phần cộng điểm được xem xét sau khi chức năng bắt buộc đã qua kiểm thử.

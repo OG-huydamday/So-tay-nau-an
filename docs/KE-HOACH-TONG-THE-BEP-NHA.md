@@ -2,7 +2,7 @@
 
 Tên dự án ........................................................
 
-Ngày cập nhật 20/11/2026 · Phiên bản 1.3 · Lịch tiếp tục 21/11–15/12/2026.
+Ngày cập nhật 21/11/2026 · Phiên bản 1.4 · Lịch tiếp tục 21/11–05/12/2026.
 
 ## 1. Mục tiêu, phạm vi và cách sử dụng tài liệu
 
@@ -10,7 +10,7 @@ Xây dựng website sổ tay công thức nấu ăn cộng đồng theo Đề 3.
 
 Tài liệu này là bản kế hoạch thống nhất để giao việc, triển khai và nghiệm thu. Dùng [bản kickoff](Ke%20hoạch.md) để giới thiệu với nhóm và [wireframe](DESIGN.md) để tham khảo bố cục. Khi đổi một quyết định, cập nhật bản này trong cùng PR với thay đổi liên quan.
 
-Lịch tiếp tục gồm 25 ngày từ 21/11 đến 15/12/2026, dự kiến 2–3 giờ/người/ngày. Ngày 21/11, nhóm kiểm kê phần đã hoàn thành và nhận việc còn thiếu. Mục tiêu đủ chức năng bắt buộc vào 09/12. Ngày 10–12/12 dành cho triển khai và kiểm thử, ngày 13–15/12 dành cho dự phòng, báo cáo và bàn giao.
+Nhóm có 15 ngày từ 21/11 đến 05/12/2026, dự kiến 2–3 giờ/người/ngày. Mục tiêu ngày 02/12 là chạy đủ chức năng bắt buộc trên main. Ngày 03–04/12 dành cho triển khai, kiểm thử và sửa lỗi. Ngày 05/12 nghiệm thu và bàn giao.
 
 Mục tiêu bàn giao là bản MVP đủ yêu cầu, có đường dẫn chạy thử, dữ liệu demo và hướng dẫn khởi động lại. Phần cộng điểm được xếp sau nghiệm thu chức năng bắt buộc. Chỉ số đánh giá và ảnh dữ liệu mẫu cần ghi rõ là dữ liệu minh họa.
 
@@ -41,7 +41,7 @@ Model cũ chỉ nên được thay thế sau khi kiểm tra có dữ liệu cầ
 | P2 — Thành viên công thức | Catalog, tìm kiếm, chi tiết, đăng/sửa/xóa, upload, duyệt công thức và quản lý loại món | Dựng UI form và màn quản trị công thức theo component chung. Sở hữu mẫu dữ liệu công thức. |
 | P3 — Thành viên giao diện và thực đơn | Layout, component chung, màn khám phá/đăng nhập, favorites, planner và shopping list | Sở hữu UI/Redux và API của thực đơn/yêu thích. P1 hỗ trợ phần server khó sau khi auth ổn định. |
 
-Điền tên P1/P2/P3 trước ngày 1. Nếu P3 cần hỗ trợ Express, P1 cùng làm API thực đơn vào 04–05/12 và dành sẵn thời gian ở lịch đó. P2 và P1 tự dựng màn thuộc module của mình theo mẫu UI chung để cân bằng tải.
+Điền tên P1/P2/P3 trước ngày 1. Nếu P3 cần hỗ trợ Express, P1 cùng làm API thực đơn vào 27–28/11 và dành sẵn thời gian ở lịch đó. P2 và P1 tự dựng màn thuộc module của mình theo mẫu UI chung để cân bằng tải.
 
 Chủ module là người giải thích dữ liệu và review ảnh hưởng, các thành viên vẫn có thể sửa module khác qua PR. Thay đổi contract, schema hoặc component dùng ở nhiều màn cần báo người đang dùng trước khi sửa. Mỗi PR có một người review, luân phiên P1 → P2 → P3 → P1. Riêng đổi quyền truy cập hoặc schema, P1 tham gia review.
 
@@ -292,31 +292,21 @@ Mỗi ngày có đầu ra chung để review và ghép vào main. Người hoàn
 
 | Ngày | P1 — Lead và Auth | P2 — Công thức | P3 — UI và Planner | Đầu ra nghiệm thu |
 | --- | --- | --- | --- | --- |
-| 1 · 21/11 | Rà phần đã làm, repo chung, Node và MongoDB | Rà schema công thức, chọn món seed | Chốt bố cục và chạy web trên máy nhóm | Cả ba chạy được bộ khung và biết phần còn thiếu |
-| 2 · 22/11 | Nối DB, chốt auth và định dạng lỗi | Chốt schema Recipe và seed categories | Chốt mẫu thẻ món, login và fixture | Schema và dữ liệu mẫu thống nhất |
-| 3 · 23/11 | Seed tài khoản, làm login API | API danh sách món đã duyệt và phân trang | Layout, router và form login dùng fixture | API login và danh sách chạy độc lập |
-| 4 · 24/11 | Đăng ký, auth/me và logout | Tìm theo tên, API chi tiết | Nối login, danh sách và chi tiết qua API | Đăng nhập và mở món với dữ liệu thật |
-| 5 · 25/11 | Kiểm quyền, hết phiên và CSRF | Thêm bộ lọc và truy vấn nguyên liệu | Nối bộ lọc và debounce | Tìm và lọc theo dữ liệu thật |
-| 6 · 26/11 | Review luồng tài khoản và thống nhất seed | Kiểm thứ tự khớp nguyên liệu | Kiểm giao diện khám phá trên điện thoại | Mốc nền chung đạt |
-| 7 · 27/11 | Chốt quyền chủ công thức và schema Review | API tạo bản nháp, validation | Thành phần form và trường động | Nháp lưu được, dữ liệu sai có phản hồi |
-| 8 · 28/11 | Chuẩn bị test quyền và đánh giá | Upload ảnh và kiểm tệp | Hỗ trợ P2 dựng form đăng món | Upload kiểm đúng định dạng và dung lượng |
-| 9 · 29/11 | API gửi đánh giá chống trùng | Nối form đăng món và gửi duyệt | Màn yêu thích dùng fixture | Đăng món vào hàng chờ, API đánh giá được thử |
-| 10 · 30/11 | API đọc sao và bình luận | API duyệt/từ chối theo version | Nối API/UI yêu thích | Admin duyệt và khách thấy công thức |
-| 11 · 01/12 | Nối sao và bình luận trên chi tiết | Màn món của tôi, chỉnh sửa bản nháp | Khung Redux và dữ liệu thực đơn tuần | Chỉnh draft giữ bản công khai |
-| 12 · 02/12 | Kiểm đánh giá đồng thời | Xóa món, quyền sở hữu và ảnh lỗi | Dựng bảng 21 ô và hộp chọn món | Chặn ghi trùng và sửa/xóa sai quyền |
-| 13 · 03/12 | Review nhóm auth và reviews | Review form, upload, duyệt và quyền | Thử lưu yêu thích và chọn món trên mobile | Mốc đóng góp và đánh giá đạt |
-| 14 · 04/12 | Ẩn bình luận, hỗ trợ schema tuần | API quản lý loại món | API đọc/lưu thực đơn theo tuần | Dữ liệu thực đơn lưu và tải lại được |
-| 15 · 05/12 | Bảng xếp hạng và review API thực đơn | Màn quản trị loại món và ẩn món | Nối chọn nhiều món, khẩu phần và snapshot | Admin quản lý được loại món, planner lưu món |
-| 16 · 06/12 | Kiểm quyền các route admin | Kiểm món ẩn/xóa trong danh sách | Gộp nguyên liệu bằng reduce theo đơn vị | Danh sách đi chợ cho kết quả đúng |
-| 17 · 07/12 | Review xung đột phiên bản thực đơn | Bù lỗi catalog và form | Xử lý lưu lỗi, xung đột và món ẩn | Mất mạng không làm mất dữ liệu đang nhập |
-| 18 · 08/12 | Chuẩn bị cấu hình demo và secrets | Chuẩn bị lưu ảnh bền vững | Hoàn thiện bố cục thực đơn mobile | Chốt môi trường demo và chạy kiểm tra cơ bản |
-| 19 · 09/12 | Demo quản trị và đánh giá | Demo khám phá, đăng và duyệt | Demo yêu thích, thực đơn và đi chợ | Đủ chức năng bắt buộc trên main |
-| 20 · 10/12 | Triển khai demo, kiểm HTTPS, cookie và DB | Kiểm seed và upload trên bản demo | Thử các màn hình trên URL demo | Bản demo trực tuyến chạy được |
-| 21 · 11/12 | Review chéo planner và quyền | Review chéo auth và đánh giá | Review chéo catalog và duyệt | Có danh sách lỗi kèm người xử lý |
-| 22 · 12/12 | Kiểm sao lưu và phục hồi dữ liệu | Sửa lỗi form, ảnh và tìm kiếm | Sửa lỗi mobile, mạng và thực đơn | Bản tích hợp vượt các ca chính |
-| 23 · 13/12 | Thử clone mới theo README | Chốt bằng chứng ca catalog | Chốt bằng chứng ca planner | Không còn lỗi chặn nghiệm thu |
-| 24 · 14/12 | Chốt báo cáo theo kết quả thật | Chuẩn bị phần thuyết trình tìm kiếm | Chuẩn bị demo thực đơn và đi chợ | Chạy thử thuyết trình và bàn giao |
-| 25 · 15/12 | Nghiệm thu cuối, tag và bàn giao | Demo công thức, xác nhận bằng chứng | Demo thực đơn, xác nhận giao diện | Nộp báo cáo và bàn giao dự án |
+| 1 · 21/11 | Nối MongoDB, chốt phiên và lỗi API | Chọn món mẫu, chốt schema Recipe | Chạy web, chốt fixture và bố cục | Cả ba chạy được bộ khung và thống nhất dữ liệu mẫu |
+| 2 · 22/11 | Seed tài khoản, viết API đăng nhập | Seed món công khai và món chờ, API danh sách | Dựng form đăng nhập và thẻ món từ fixture | API trả tài khoản và danh sách đúng mẫu |
+| 3 · 23/11 | Đăng ký, duy trì phiên, đăng xuất | Tìm theo tên và mở chi tiết theo ID | Nối form, danh sách và chi tiết với API | Đăng nhập và mở món thật trên main |
+| 4 · 24/11 | Kiểm quyền, CSRF và hết phiên | Tìm theo nguyên liệu, lọc và phân trang | Nối bộ lọc, debounce và trạng thái rỗng | Khách tìm đúng món công khai theo bộ lọc |
+| 5 · 25/11 | Chốt schema đánh giá và quy tắc ghi | Tạo nháp và form nguyên liệu, bước làm | Viết API và màn yêu thích | Lưu được nháp và yêu thích đúng tài khoản |
+| 6 · 26/11 | Ghi đánh giá một lần mỗi người/món | Upload ảnh, kiểm tệp và gửi duyệt | Dựng Redux và bảng 21 ô theo tuần | Món có ảnh vào hàng chờ, bảng tuần chọn được bữa |
+| 7 · 27/11 | Hiển thị sao, số lượt và bình luận | Duyệt hoặc từ chối đúng phiên bản | Đọc/lưu tuần, kiểm phiên bản khi ghi | Món đã duyệt xuất hiện và nhận được đánh giá |
+| 8 · 28/11 | Review API tuần và quyền người dùng | Sửa nháp, xóa món và kiểm quyền chủ món | Nối chọn món, khẩu phần và snapshot | Tải lại đúng thực đơn, sửa nháp giữ bản công khai |
+| 9 · 29/11 | Ẩn bình luận, giữ điểm sao | Quản lý loại món và ẩn món | Gộp nguyên liệu theo khẩu phần và đơn vị | Admin xử lý nội dung, tuần có danh sách đi chợ |
+| 10 · 30/11 | Làm bảng xếp hạng, thử đánh giá đồng thời | Kiểm ảnh, món ẩn và loại món đang dùng | Xử lý hai tab, món ẩn và lỗi lưu | Ghi cũ bị từ chối, danh sách đi chợ cập nhật đúng |
+| 11 · 01/12 | Chuẩn bị cấu hình triển khai và tài khoản demo | Kiểm seed, lưu ảnh bền vững và form | Kiểm mobile, bàn phím và lỗi mạng | Nhóm chạy thử ba vai trò và ghi lỗi theo người |
+| 12 · 02/12 | Ghép quyền, đánh giá và quản trị | Demo tìm, đăng, sửa và duyệt món | Demo yêu thích, thực đơn và đi chợ | Đủ chức năng bắt buộc chạy cùng nhau trên main |
+| 13 · 03/12 | Triển khai, kiểm phiên và MongoDB | Kiểm seed, ảnh sau khởi động lại | Kiểm các màn trên bản demo | Có kết quả thử triển khai và danh sách lỗi |
+| 14 · 04/12 | Thử clone mới, sao lưu và phục hồi | Kiểm chéo tài khoản, sửa lỗi công thức | Kiểm chéo catalog, sửa lỗi thực đơn | Chạy lại T01–T13, ghi bằng chứng và tập demo |
+| 15 · 05/12 | Chốt báo cáo, tag và bàn giao | Trình diễn công thức và duyệt bài | Trình diễn thực đơn và đi chợ | Bàn giao mã nguồn, hướng dẫn, báo cáo và demo |
 
 ## 10. Kiểm thử và vận hành
 
@@ -338,16 +328,16 @@ Mỗi ngày có đầu ra chung để review và ghép vào main. Người hoàn
 
 Unit test tập trung vào chuẩn hóa, tỷ lệ khẩu phần và phép gộp. Integration test dùng database riêng trên replica set cho giao dịch đánh giá, quyền sở hữu và xung đột version. Chạy lint, build và test trước khi ghép vào main. Seed demo chỉ tác động dữ liệu mẫu đã định danh.
 
-Web và API triển khai cùng origin. Dùng MongoDB hỗ trợ replica set và kho ảnh bền vững, dự kiến Cloudinary. Kiểm tra quyền truy cập và chi phí trước khi chọn gói. Cấu hình nhạy cảm nằm trong biến môi trường. Server cần kiểm tra cấu hình, kết nối database trước khi báo sẵn sàng và ghi lỗi nội bộ ở server. Kiểm sao lưu và khôi phục vào 12/12. Nếu URL demo chưa chạy, ghi rõ trạng thái và bàn giao hướng dẫn chạy local.
+Web và API triển khai cùng origin. Dùng MongoDB hỗ trợ replica set và kho ảnh bền vững, dự kiến Cloudinary. Kiểm tra quyền truy cập và chi phí trước khi chọn gói. Cấu hình nhạy cảm nằm trong biến môi trường. Server cần kiểm tra cấu hình, kết nối database trước khi báo sẵn sàng và ghi lỗi nội bộ ở server. Kiểm sao lưu và khôi phục vào 04/12. Nếu URL demo chưa chạy, ghi rõ trạng thái và bàn giao hướng dẫn chạy local.
 
 ## 11. Bàn giao hoàn thành
 
 - Chạy T01–T13 và ghi bằng chứng. Hạng mục chưa đạt có người xử lý và lịch theo dõi.
 - Gắn tag phát hành, xác minh README từ clone mới, cung cấp env mẫu và seed.
 - Bàn giao mã nguồn, báo cáo, tài khoản demo và kịch bản trình diễn. Mỗi thành viên demo phần mình và review ít nhất một module khác.
-- Ưu tiên xử lý lỗi bắt buộc vào 13–14/12. Cân nhắc phần cộng điểm khi các ca bắt buộc đã đạt.
+- Ưu tiên xử lý lỗi bắt buộc vào 03–04/12. Cân nhắc phần cộng điểm khi các ca bắt buộc đã đạt.
 
 ## 12. Ghi nhận điều chỉnh
 
-Phiên bản 1.3 để trống tên dự án và điều chỉnh lịch tiếp tục từ 21/11 đến 15/12/2026. Ngày 09/12 là mốc nội bộ cho chức năng bắt buộc. Nhóm dành sáu ngày cuối để kiểm thử, sửa lỗi, hoàn thiện báo cáo và tập demo.
+Phiên bản 1.4 chốt bàn giao ngày 05/12. Nhóm kiểm thử từng phần ngay sau khi ghép để dành hai ngày cuối trước bàn giao cho việc triển khai và xử lý lỗi.
 

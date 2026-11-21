@@ -30,7 +30,7 @@ Nhóm cũng có thể dùng một MongoDB replica set dành riêng cho phát tri
 | Tài liệu | Dùng để |
 | --- | --- |
 | [Kế hoạch kickoff gửi nhóm](docs/Ke%20hoạch.md) | Mục tiêu, phân vai P1/P2/P3, việc buổi đầu và mốc demo |
-| [Kế hoạch tổng thể 21/11–15/12](docs/KE-HOACH-TONG-THE-BEP-NHA.md) | Thiết kế đích, hợp đồng API, lịch 25 ngày và 13 ca nghiệm thu |
+| [Kế hoạch tổng thể 21/11–05/12](docs/KE-HOACH-TONG-THE-BEP-NHA.md) | Thiết kế đích, hợp đồng API, lịch 15 ngày và 13 ca nghiệm thu |
 | [Dữ liệu mẫu buổi đầu](docs/fixtures/README.md) | Dựng giao diện song song với API đăng nhập, công thức và thực đơn |
 | [Wireframe và thiết kế màn hình](docs/DESIGN.md) | Tham khảo bố cục. Áp dụng quyết định nghiệp vụ và phân công trong kế hoạch tổng thể |
 
