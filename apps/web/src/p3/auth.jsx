@@ -23,16 +23,17 @@ export function AuthProvider({ children }) {
         credentials: "same-origin",
         signal: controller.signal,
       });
-      if (!response.ok)
-        throw new Error(
-          [400, 401, 403].includes(response.status)
-            ? "Email hoặc mật khẩu chưa đúng."
-            : "Dịch vụ đăng nhập đang bận. Bạn thử lại sau nhé.",
-        );
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        const message = typeof error?.message === "string" && response.status < 500
+          ? error.message
+          : "Dịch vụ đăng nhập đang bận. Bạn thử lại sau nhé.";
+        throw new Error(message);
+      }
       const data = await response.json();
       if (!data.user || typeof data.user !== "object")
         throw new Error("Phản hồi đăng nhập chưa đúng định dạng đã cấu hình.");
-      setSession({ user: data.user, token: data.token ?? null });
+      setSession({ user: data.user });
     } catch (error) {
       if (error.name === "AbortError" || error instanceof TypeError)
         throw new Error("Chưa thể kết nối máy chủ. Vui lòng thử lại.");

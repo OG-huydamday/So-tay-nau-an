@@ -1,6 +1,6 @@
 /* global URLSearchParams, window */
 import React, { useState, useEffect, useRef } from "react";
-import { createRoot } from "react-dom/client";
+
 import {
   HashRouter,
   Routes,
@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth";
 import { RecipeCards } from "../features/catalog/RecipeCards";
+import { useCarousel } from "../shared/useCarousel";
 import fixture from "../../../../docs/fixtures/kickoff.json";
 import "./style.css";
 
@@ -45,9 +46,7 @@ function Icon({ name, size = 20 }) {
 function Brand() {
   return (
     <Link className="brand" to="/">
-      <span>
-        <Icon name="pot" size={26} />
-      </span>
+      <img src={`${import.meta.env.BASE_URL}logo-so-tay-nia-la.png`} width="48" height="48" alt="" />
       Sổ Tay Nấu Ăn
     </Link>
   );
@@ -110,9 +109,42 @@ function Shell() {
     </>
   );
 }
+
+const benefits = [
+  { title: "Tạo sổ tay nấu ăn riêng của bạn", body: "Gom những công thức hợp khẩu vị vào một chỗ để lần sau mở ra là nấu.", image: "/images/loi-ich-so-tay.jpg" },
+  { title: "Tận dụng nguyên liệu sẵn có", body: "Bắt đầu từ vài quả trứng và cà chua trong bếp để tìm món cho bữa tối.", image: "/images/loi-ich-nguyen-lieu.jpg" },
+  { title: "Tự tin vào bếp", body: "Xem trước nguyên liệu, rồi theo từng bước khi thử một món mới.", image: "/images/loi-ich-vao-bep.jpg" },
+  { title: "Nhẹ đầu chuyện đi chợ", body: "Xếp món cho cả tuần và gom nguyên liệu cần mua vào một danh sách.", image: "/images/loi-ich-di-cho.jpg" },
+];
+
+function BenefitCarousel() {
+  const { index, setIndex, playing, setPlaying } = useCarousel(benefits.length);
+  return (
+    <section id="loi-ich" className="cover" aria-label="Lợi ích của sổ tay">
+      {benefits.map((benefit, i) => (
+        <figure className="dish-slide" key={benefit.title} aria-hidden={i !== index}>
+          <img src={benefit.image} alt="" />
+          <figcaption>
+            <strong>{benefit.title}</strong>
+            <span>{benefit.body}</span>
+          </figcaption>
+        </figure>
+      ))}
+      <div className="dish-controls">
+        <button type="button" aria-label={playing ? "Tạm dừng chuyển ảnh" : "Tiếp tục chuyển ảnh"}
+          onClick={() => setPlaying(!playing)}>{playing ? "Ⅱ" : "▶"}</button>
+        {benefits.map((benefit, i) => (
+          <button key={benefit.title} type="button" aria-label={`Xem: ${benefit.title}`} aria-pressed={i === index}
+            onClick={() => { setIndex(i); setPlaying(false); }}><i /></button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Hero() {
   return (
-    <section className="hero wrap">
+    <section className="hero">
       <div>
         <div className="kicker">
           <i /> CẨM NANG BẾP NHÀ
@@ -130,55 +162,7 @@ function Hero() {
           Khám phá sổ tay <Icon name="arrow" />
         </Link>
       </div>
-      <figure className="cover shine">
-        <img
-          src="/salad.jpg"
-          alt="Đĩa rau củ tươi nhiều màu nhìn từ trên xuống"
-        />
-        <figcaption>
-          <small>GỢI Ý CHO BỮA TRƯA</small>
-          <strong>Salad rau củ</strong>
-          <span>
-            <Icon name="clock" size={15} /> 15 phút <b>·</b> Dễ làm
-          </span>
-        </figcaption>
-      </figure>
-    </section>
-  );
-}
-const benefits = [
-  [
-    "leaf",
-    "Tận dụng nguyên liệu",
-    "Biến những thứ sẵn có trong tủ lạnh thành gợi ý cho bữa ăn.",
-  ],
-  [
-    "book",
-    "Tự tin vào bếp",
-    "Theo dõi nguyên liệu và từng bước làm, kể cả khi mới tập nấu.",
-  ],
-  [
-    "calendar",
-    "Nhẹ đầu chuyện đi chợ",
-    "Sắp xếp bữa ăn cả tuần và gom nguyên liệu cần mua vào một danh sách.",
-  ],
-];
-function Benefits() {
-  return (
-    <section className="benefits" id="loi-ich" aria-label="Lợi ích">
-      <div className="wrap trio">
-        {benefits.map(([icon, title, body]) => (
-          <article key={title}>
-            <span className="symbol">
-              <Icon name={icon} />
-            </span>
-            <div>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+      <BenefitCarousel />
     </section>
   );
 }
@@ -202,7 +186,11 @@ const features = [
     title: "Xếp món cho cả tuần",
     desc: "Sắp xếp bữa sáng, trưa và tối cho từng ngày để biết trước cần chuẩn bị gì.",
     label: "Thực đơn thứ Hai",
-    rows: ["Sáng · Bánh mì trứng", "Trưa · Cơm gà", "Tối · Canh bí đỏ"],
+    rows: [
+      "Sáng · Bánh mì trứng",
+      "Trưa · Cơm gà + dưa leo + canh rau ngót",
+      "Tối · Cơm trắng + cá kho + canh bí đỏ",
+    ],
   },
   {
     name: "Đi chợ",
@@ -267,7 +255,6 @@ function Home() {
     <>
       <Hero />
       <RecipeCards items={fixture.recipeList.items} />
-      <Benefits />
       <Features />
       <section className="wrap cta shine">
         <div>
@@ -388,23 +375,25 @@ function Login() {
     </div>
   );
 }
-createRoot(document.getElementById("root")).render(
-  <HashRouter>
-    <AuthProvider>
-      <Routes>
-        <Route element={<Shell />}>
-          <Route index element={<Home />} />
-          <Route path="dang-nhap" element={<Login />} />
-          <Route
-            path="*"
-            element={
-              <Link className="btn" to="/">
-                Về trang chủ
-              </Link>
-            }
-          />
-        </Route>
-      </Routes>
-    </AuthProvider>
-  </HashRouter>,
-);
+export function App() {
+  return (
+    <HashRouter>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Shell />}>
+            <Route index element={<Home />} />
+            <Route path="dang-nhap" element={<Login />} />
+            <Route
+              path="*"
+              element={
+                <Link className="btn" to="/">
+                  Về trang chủ
+                </Link>
+              }
+            />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </HashRouter>
+  );
+}
