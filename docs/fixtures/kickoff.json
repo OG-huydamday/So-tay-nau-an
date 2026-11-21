@@ -5,17 +5,22 @@
   "loginError": { "code": "INVALID_CREDENTIALS", "message": "Email hoặc mật khẩu chưa đúng." },
   "recipeList": {
     "items": [
-      { "id": "recipe-demo", "title": "Trứng chiên cà chua", "summary": "Món trứng đơn giản cho bữa tối.", "image": null, "category": { "id": "category-demo", "name": "Món chính" }, "prepMinutes": 5, "cookMinutes": 10, "difficulty": "Dễ", "servings": 2, "ratingAverage": 0, "ratingCount": 0 }
+      { "id": "recipe-demo", "title": "Trứng chiên cà chua", "summary": "Món trứng đơn giản cho bữa tối.", "image": "/images/trung-chien-ca-chua.jpg", "category": { "id": "category-demo", "name": "Món chính" }, "prepMinutes": 5, "cookMinutes": 10, "difficulty": "Dễ", "servings": 2, "ratingAverage": 0, "ratingCount": 0 },
+      {"id":"pho-bo","title":"Phở bò","summary":"Bánh phở, thịt bò thái mỏng và rau thơm trong nước dùng nóng.","image":"/images/pho-bo.jpg","category":{"id":"category-demo","name":"Món chính"},"prepMinutes":20,"cookMinutes":120,"difficulty":"Vừa","servings":4,"ratingAverage":0,"ratingCount":0},
+      {"id":"salad","title":"Salad rau củ","summary":"Đĩa rau củ tươi nhiều màu cho bữa trưa nhẹ nhàng.","image":"/salad.jpg","category":{"id":"category-side","name":"Món phụ"},"prepMinutes":10,"cookMinutes":0,"difficulty":"Dễ","servings":2,"ratingAverage":0,"ratingCount":0},
+      {"id":"bun-thit-nuong","title":"Bún thịt nướng","summary":"Bún tươi ăn cùng thịt nướng, rau sống và nước mắm chua ngọt.","image":"/images/bun-thit-nuong.jpg","category":{"id":"category-demo","name":"Món chính"},"prepMinutes":20,"cookMinutes":20,"difficulty":"Vừa","servings":2,"ratingAverage":0,"ratingCount":0},
+      {"id":"sinh-to-xoai-cam","title":"Sinh tố xoài cam","summary":"Xoài chín xay cùng cam, vị ngọt dịu xen chút chua.","image":"/images/sinh-to-xoai-cam.jpg","category":{"id":"category-drink","name":"Đồ uống"},"prepMinutes":5,"cookMinutes":0,"difficulty":"Dễ","servings":2,"ratingAverage":0,"ratingCount":0},
+      {"id":"creme-brulee","title":"Crème brûlée sô cô la trắng","summary":"Lớp đường caramel giòn phủ trên kem trứng sô cô la trắng.","image":"/images/creme-brulee.jpg","category":{"id":"category-dessert","name":"Tráng miệng"},"prepMinutes":15,"cookMinutes":40,"difficulty":"Vừa","servings":4,"ratingAverage":0,"ratingCount":0}
     ],
     "page": 1,
     "limit": 10,
-    "total": 1
+    "total": 6
   },
   "recipeDetail": {
     "id": "recipe-demo",
     "title": "Trứng chiên cà chua",
     "summary": "Món trứng đơn giản cho bữa tối.",
-    "image": null,
+    "image": "/images/trung-chien-ca-chua.jpg",
     "category": { "id": "category-demo", "name": "Món chính" },
     "prepMinutes": 5,
     "cookMinutes": 10,
