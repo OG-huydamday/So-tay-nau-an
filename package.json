@@ -5,6 +5,7 @@
   "description": "Sổ tay công thức nấu ăn cộng đồng cho nhóm 3 người",
   "workspaces": ["apps/*"],
   "scripts": {
+    "seed:accounts": "node apps/api/src/features/auth/seed.js",
     "dev": "concurrently -n API,WEB -c yellow,green \"npm run dev -w @bep-nha/api\" \"npm run dev -w @bep-nha/web\"",
     "build": "npm run build -w @bep-nha/web",
     "test": "npm run test -w @bep-nha/api",
