@@ -11,6 +11,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth";
+import {Discover, RecipePreview} from "../features/planner/Discovery";
 import { RecipeCards } from "../features/catalog/RecipeCards";
 import { useCarousel } from "../shared/useCarousel";
 import fixture from "../../../../docs/fixtures/kickoff.json";
@@ -65,7 +66,7 @@ function Shell() {
     setOpen(false);
     const id = new URLSearchParams(location.search).get("muc");
     if (id) document.getElementById(id)?.scrollIntoView();
-    else window.scrollTo(0, 0);
+    else if (!location.search || location.pathname !== "/kham-pha") window.scrollTo(0, 0);
   }, [location]);
   return (
     <>
@@ -81,6 +82,7 @@ function Shell() {
             <Icon name="menu" />
           </button>
           <nav className={open ? "open" : ""}>
+            <Link to="/kham-pha">Khám phá</Link>
             {sections.map(([id, label]) => (
               <Link key={id} to={"/?muc=" + id}>
                 {label}
@@ -143,6 +145,8 @@ function BenefitCarousel() {
 }
 
 function Hero() {
+  const [name,setName]=useState("");
+  const navigate=useNavigate();
   return (
     <section className="hero">
       <div>
@@ -158,9 +162,14 @@ function Hero() {
           Từ vài nguyên liệu sẵn trong tủ lạnh đến thực đơn cả tuần, tìm cảm
           hứng cho từng bữa cơm nhà.
         </p>
-        <Link className="btn shine" to="/?muc=cong-thuc">
-          Khám phá sổ tay <Icon name="arrow" />
-        </Link>
+        <form className="home-search" onSubmit={event=>{
+          event.preventDefault();
+          navigate(name.trim()?"/kham-pha?q="+encodeURIComponent(name.trim()):"/kham-pha");
+        }}>
+          <label htmlFor="home-recipe-name">Tìm món theo tên</label>
+          <input id="home-recipe-name" placeholder="Ví dụ: trứng chiên" maxLength={120} value={name} onChange={event=>setName(event.target.value)}/>
+          <button className="btn shine">Khám phá sổ tay <Icon name="arrow"/></button>
+        </form>
       </div>
       <BenefitCarousel />
     </section>
@@ -382,6 +391,8 @@ export function App() {
         <Routes>
           <Route element={<Shell />}>
             <Route index element={<Home />} />
+            <Route path="kham-pha" element={<Discover />} />
+            <Route path="cong-thuc/:id" element={<RecipePreview />} />
             <Route path="dang-nhap" element={<Login />} />
             <Route
               path="*"
