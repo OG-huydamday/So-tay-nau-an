@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Link,
+  useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { useResource, useDebounce } from "./useRecipes";
+import { useAuth } from "../../p3/auth";
+import { useResource, useDebounce, writeFavorite } from "./useRecipes";
 import "./discovery.css";
 
 const perPage = 6;
@@ -26,7 +29,66 @@ function Status({ resource }) {
   if (resource.loading) return <p role="status">Đang tải…</p>;
   return null;
 }
-function Cards({ items, showMatch = false }) {
+function useFavorites() {
+  const { session, restoring } = useAuth();
+  const location = useLocation(),
+    navigate = useNavigate();
+  const [revision, refresh] = useState(0),
+    [busy, setBusy] = useState(null),
+    [error, report] = useState("");
+  const lock = useRef(false);
+  const list = useResource(session ? "/me/favorites" : null, revision);
+  const ids = new Set(list.data?.items.map((item) => item.id));
+  function loginFor(id) {
+    navigate("/dang-nhap", {
+      state: { returnTo: location.pathname + location.search, saveId: id },
+    });
+  }
+  async function toggle(id) {
+    if (lock.current || restoring) return;
+    if (!session || list.error?.status === 401) {
+      loginFor(id);
+      return;
+    }
+    lock.current = true;
+    setBusy(id);
+    report("");
+    try {
+      await writeFavorite(id, !ids.has(id));
+      refresh((n) => n + 1);
+    } catch (err) {
+      if (err.status === 401) loginFor(id);
+      else report(err.message);
+    } finally {
+      lock.current = false;
+      setBusy(null);
+    }
+  }
+  return { ids, list, toggle, busy, error, session, restoring, loginFor };
+}
+function Save({ id, fav }) {
+  const saved = fav.ids.has(id);
+  return (
+    <button
+      className="save-recipe"
+      aria-pressed={saved}
+      disabled={
+        fav.restoring ||
+        fav.busy !== null ||
+        fav.list.loading ||
+        !!(fav.list.error && fav.list.error.status !== 401)
+      }
+      onClick={() => fav.toggle(id)}
+    >
+      {fav.busy === id
+        ? "Đang lưu…"
+        : saved
+          ? "♥ Bỏ yêu thích"
+          : "♡ Lưu yêu thích"}
+    </button>
+  );
+}
+function Cards({ items, fav, showMatch = false }) {
   return (
     <div className="discover-grid">
       {items.map((r) => (
@@ -53,6 +115,7 @@ function Cards({ items, showMatch = false }) {
             )}
             <div className="card-actions">
               <Link to={"/cong-thuc/" + r.id}>Xem công thức →</Link>
+              <Save id={r.id} fav={fav} />
             </div>
           </div>
         </article>
@@ -101,6 +164,7 @@ export function Discover() {
   const suggestions = useResource(
     hint ? "/ingredients/suggestions?q=" + encodeURIComponent(hint) : null,
   );
+  const fav = useFavorites();
   const [notice, setNotice] = useState("");
   function add(value) {
     const values = value
@@ -232,6 +296,10 @@ export function Discover() {
         {categories.error && <Status resource={categories} />}
       </div>
       <Status resource={recipes} />
+      {fav.list.error && fav.list.error.status !== 401 && (
+        <Status resource={fav.list} />
+      )}
+      {fav.error && <p role="alert">{fav.error}</p>}
       {recipes.data && (
         <>
           <p aria-live="polite">
@@ -241,6 +309,7 @@ export function Discover() {
           </p>
           <Cards
             items={recipes.data.items}
+            fav={fav}
             showMatch={!!selected.length}
           />
           {(page > 1 || recipes.data.total > perPage) && (
@@ -265,9 +334,40 @@ export function Discover() {
     </section>
   );
 }
+export function Favorites() {
+  const fav = useFavorites();
+  return (
+    <section className="wrap section discovery">
+      <h1>Món yêu thích</h1>
+      {fav.restoring ? (
+        <p>Đang đọc tài khoản…</p>
+      ) : !fav.session || fav.list.error?.status === 401 ? (
+        <>
+          <p>Đăng nhập để mở sổ món của bạn.</p>
+          <button onClick={() => fav.loginFor(null)}>Đăng nhập</button>
+        </>
+      ) : (
+        <>
+          <Status resource={fav.list} />
+          {fav.error && <p role="alert">{fav.error}</p>}
+          {fav.list.data &&
+            (fav.list.data.items.length ? (
+              <Cards items={fav.list.data.items} fav={fav} />
+            ) : (
+              <p>
+                Bạn chưa lưu món nào.{" "}
+                <Link to="/kham-pha">Khám phá món ngon →</Link>
+              </p>
+            ))}
+        </>
+      )}
+    </section>
+  );
+}
 export function RecipePreview() {
   const { id } = useParams(),
     recipe = useResource("/recipes/" + encodeURIComponent(id)),
+    fav = useFavorites(),
     r = recipe.data;
   return (
     <section className="wrap section discovery recipe-preview">
@@ -281,6 +381,11 @@ export function RecipePreview() {
           <p>
             {r.totalMinutes} phút · {r.servings} phần · {r.difficulty}
           </p>
+          <Save id={id} fav={fav} />
+          {fav.error && <p role="alert">{fav.error}</p>}
+          {fav.list.error && fav.list.error.status !== 401 && (
+            <Status resource={fav.list} />
+          )}
           <h2>Nguyên liệu</h2>
           <ul>
             {r.ingredients.map((i, n) => (

@@ -51,3 +51,12 @@ export function useDebounce(value, ms = 350) {
   }, [value, ms]);
   return result;
 }
+export function writeFavorite(id, save) {
+  const cookie = document.cookie
+    .split("; ")
+    .find((item) => item.startsWith("csrf="));
+  return request("/me/favorites/" + encodeURIComponent(id), {
+    method: save ? "PUT" : "DELETE",
+    headers: { "x-csrf-token": cookie?.slice(5) || "" },
+  });
+}
