@@ -8,6 +8,7 @@ import { errorHandler, notFound } from './middleware/error.js';
 
 export function createApp() {
   const app = express();
+  app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.use(helmet());
   app.use(cors({ origin: config.clientUrl, credentials: true }));
