@@ -1,6 +1,6 @@
 # Quy trình làm việc và quy chuẩn mã nguồn — Bếp Nhà
 
-Tài liệu ngắn gọn này giúp cả nhóm tránh conflict Git và lệch cấu trúc khi làm việc song song. Xem chi tiết thiết kế tại [docs/KE-HOACH-TONG-THE-BEP-NHA.md](docs/KE-HOACH-TONG-THE-BEP-NHA.md).
+Tài liệu ngắn gọn này giúp cả nhóm (**Huy**, **Duy Anh**, **Phú**) tránh conflict Git và lệch cấu trúc khi làm việc song song. Xem chi tiết thiết kế tại [docs/KE-HOACH-TONG-THE-BEP-NHA.md](docs/KE-HOACH-TONG-THE-BEP-NHA.md).
 
 ---
 
@@ -14,9 +14,13 @@ Tài liệu ngắn gọn này giúp cả nhóm tránh conflict Git và lệch c�
    ```
    - Không tách nhánh mới từ một nhánh `feat/*` khác đang làm dở.
    - Đặt tên nhánh theo tính năng (`feat/recipe-write`, `feat/weekly-menu`, `feat/reviews`), không ghép tên người hoặc ngày tháng.
-2. **Giữ đúng phạm vi file của task**:
-   - Không tự ý thêm/sửa code trong các file dùng chung (`apps/api/src/app.js`, `apps/web/src/p3/main.jsx`, `apps/web/src/p3/auth.jsx`) ngoài phạm vi công việc của mình nếu chưa báo trước trong nhóm.
-   - Nếu cần endpoint của thành viên khác khi chưa merge, trao đổi trước để thống nhất interface thay vì tạo route trùng.
+2. **Giữ đúng phạm vi file của task & tách file riêng**:
+   - Không tự ý sửa đổi code trong các file dùng chung (`apps/api/src/app.js`, `apps/web/src/p3/main.jsx`, `apps/web/src/p3/auth.jsx`, `apps/web/src/p3/style.css`) ngoài phạm vi công việc của mình nếu chưa báo trước trong nhóm.
+   - **Frontend**: Mỗi tính năng tự tạo file `.jsx` và `.css` riêng trong `apps/web/src/features/<tên-module>/` (không viết component mới vào `p3/main.jsx` hay dồn CSS mới vào `p3/style.css`). Ở `p3/main.jsx` chỉ import trang đó và thêm đúng 1 dòng `<Route>`.
+   - **Backend**: Khi gắn API mới vào `apps/api/src/app.js`, không sửa các dòng `app.use(...)` đang có, chỉ thêm dòng `app.use(...)` của module mình ngay trước `notFound` theo đúng đường dẫn đã phân chia:
+     - **Huy**: `/api/auth`, `/api/recipes/:id/reviews`, `/api/admin/reviews`, `/api/admin/stats/top-recipes`
+     - **Duy Anh**: `/api/me/recipes`, `/api/recipes` (`POST`/`PUT`/`DELETE`/`submit`), `/api/uploads`, `/api/admin/recipes`, `/api/admin/categories`
+     - **Phú**: `/api/me/favorites`, `/api/me/weekly-menu`
 
 ---
 
@@ -40,7 +44,7 @@ Tài liệu ngắn gọn này giúp cả nhóm tránh conflict Git và lệch c�
   - Thao tác ghi (`POST`, `PUT`, `PATCH`, `DELETE`) sau đăng nhập bắt buộc qua middleware `protectWrites` (đã gắn sẵn ở `/api`).
 
 ### Frontend (`apps/web`)
-- Đặt component theo đúng module trong `apps/web/src/features/<tên-module>/`.
+- Đặt component và CSS theo đúng module trong `apps/web/src/features/<tên-module>/`.
 - Tìm kiếm cần debounce (~350ms) và dùng `AbortController` hủy request cũ.
 - Mọi thao tác ghi API cần đọc cookie `csrf` và gửi kèm header `X-CSRF-Token`.
 

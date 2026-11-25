@@ -37,13 +37,13 @@ Model cũ chỉ nên được thay thế sau khi kiểm tra có dữ liệu cầ
 
 | Người | Sở hữu chính | Phối hợp và trách nhiệm chung |
 | --- | --- | --- |
-| P1 — Trưởng nhóm | Auth, database bootstrap, review sao/bình luận, kiểm duyệt bình luận, bảng xếp hạng | Quản lý tích hợp, môi trường, phát hành. Dành 25–30% thời gian cho review và gỡ vướng. |
-| P2 — Thành viên công thức | Catalog, tìm kiếm, chi tiết, đăng/sửa/xóa, upload, duyệt công thức và quản lý loại món | Dựng UI form và màn quản trị công thức theo component chung. Sở hữu mẫu dữ liệu công thức. |
-| P3 — Thành viên giao diện và thực đơn | Layout, component chung, màn khám phá/đăng nhập, favorites, planner và shopping list | Sở hữu UI/Redux và API của thực đơn/yêu thích. P1 hỗ trợ phần server khó sau khi auth ổn định. |
+| Huy — Trưởng nhóm | Auth, database bootstrap, review sao/bình luận, kiểm duyệt bình luận, bảng xếp hạng | Quản lý tích hợp, môi trường, phát hành. Dành 25–30% thời gian cho review và gỡ vướng. |
+| Duy Anh — Thành viên công thức | Catalog, tìm kiếm, chi tiết, đăng/sửa/xóa, upload, duyệt công thức và quản lý loại món | Dựng UI form và màn quản trị công thức theo component chung. Sở hữu mẫu dữ liệu công thức. |
+| Phú — Thành viên giao diện và thực đơn | Layout, component chung, màn khám phá/đăng nhập, favorites, planner và shopping list | Sở hữu UI/Redux và API của thực đơn/yêu thích. Huy hỗ trợ phần server khó sau khi auth ổn định. |
 
-Điền tên P1/P2/P3 trước ngày 1. Nếu P3 cần hỗ trợ Express, P1 cùng làm API thực đơn vào 27–28/11 và dành sẵn thời gian ở lịch đó. P2 và P1 tự dựng màn thuộc module của mình theo mẫu UI chung để cân bằng tải.
+Nếu Phú cần hỗ trợ Express, Huy cùng làm API thực đơn vào 27–28/11 và dành sẵn thời gian ở lịch đó. Duy Anh và Huy tự dựng màn thuộc module của mình theo mẫu UI chung để cân bằng tải.
 
-Chủ module là người giải thích dữ liệu và review ảnh hưởng, các thành viên vẫn có thể sửa module khác qua PR. Thay đổi contract, schema hoặc component dùng ở nhiều màn cần báo người đang dùng trước khi sửa. Mỗi PR có một người review, luân phiên P1 → P2 → P3 → P1. Riêng đổi quyền truy cập hoặc schema, P1 tham gia review.
+Chủ module là người giải thích dữ liệu và review ảnh hưởng, các thành viên vẫn có thể sửa module khác qua PR. Thay đổi contract, schema hoặc component dùng ở nhiều màn cần báo người đang dùng trước khi sửa. Mỗi PR có một người review, luân phiên Huy → Duy Anh → Phú → Huy. Riêng đổi quyền truy cập hoặc schema, Huy tham gia review.
 
 ## 4. Khung thư mục đích
 
@@ -61,18 +61,18 @@ bep-nha/
 │   │   │   ├── config.js / db.js
 │   │   │   ├── middleware/               # Auth, role, validation, error
 │   │   │   ├── models/
-│   │   │   │   ├── User.js               # P1
-│   │   │   │   ├── Review.js             # P1
-│   │   │   │   ├── Recipe.js             # P2
-│   │   │   │   ├── Category.js           # P2
-│   │   │   │   ├── Upload.js             # P2
-│   │   │   │   └── WeeklyMenu.js         # P3
+│   │   │   │   ├── User.js               # Huy
+│   │   │   │   ├── Review.js             # Huy
+│   │   │   │   ├── Recipe.js             # Duy Anh
+│   │   │   │   ├── Category.js           # Duy Anh
+│   │   │   │   ├── Upload.js             # Duy Anh
+│   │   │   │   └── WeeklyMenu.js         # Phú
 │   │   │   ├── features/
-│   │   │   │   ├── auth/                # P1
-│   │   │   │   ├── reviews/              # P1, gồm route admin bình luận
-│   │   │   │   ├── catalog/              # P2, gồm route duyệt và loại món
-│   │   │   │   ├── uploads/              # P2
-│   │   │   │   └── planner/              # P3, gồm yêu thích và đi chợ
+│   │   │   │   ├── auth/                # Huy
+│   │   │   │   ├── reviews/              # Huy, gồm route admin bình luận
+│   │   │   │   ├── catalog/              # Duy Anh, gồm route duyệt và loại món
+│   │   │   │   ├── uploads/              # Duy Anh
+│   │   │   │   └── planner/              # Phú, gồm yêu thích và đi chợ
 │   │   │   └── scripts/seed.js           # Dữ liệu demo, chạy lặp an toàn
 │   │   └── test/                        # Unit và integration theo module
 │   └── web/
@@ -80,19 +80,19 @@ bep-nha/
 │       └── src/
 │           ├── main.jsx
 │           ├── app/
-│           │   ├── router.jsx            # P3 ghép các route module
-│           │   ├── providers.jsx         # P1 + P3, auth và Redux
-│           │   └── store.js              # P3
+│           │   ├── router.jsx            # Phú ghép các route module
+│           │   ├── providers.jsx         # Huy + Phú, auth và Redux
+│           │   └── store.js              # Phú
 │           ├── shared/
-│           │   ├── api/client.js         # P1, gửi request và đọc lỗi
-│           │   ├── ui/                   # P3, Button/Field/Dialog/Feedback
+│           │   ├── api/client.js         # Huy, gửi request và đọc lỗi
+│           │   ├── ui/                   # Phú, Button/Field/Dialog/Feedback
 │           │   └── hooks/useDebounce.js
 │           ├── features/
-│           │   ├── auth/                # P1 logic, P3 form ban đầu
-│           │   ├── catalog/              # P2 logic/form, P3 khám phá ban đầu
-│           │   ├── reviews/              # P1
-│           │   ├── planner/              # P3
-│           │   └── admin/                # Layout P3, màn theo chủ nghiệp vụ
+│           │   ├── auth/                # Huy logic, Phú form ban đầu
+│           │   ├── catalog/              # Duy Anh logic/form, Phú khám phá ban đầu
+│           │   ├── reviews/              # Huy
+│           │   ├── planner/              # Phú
+│           │   └── admin/                # Layout Phú, màn theo chủ nghiệp vụ
 │           └── styles/                   # Token và CSS global tối thiểu
 └── docs/KE-HOACH-TONG-THE-BEP-NHA.md       # Kế hoạch và quyết định chung
 ```
@@ -248,17 +248,17 @@ Base `/api`, JSON camelCase, ID công khai là `id`. Chi tiết published đư�
 
 | Module | Endpoint cần xây | Chủ sở hữu |
 | --- | --- | --- |
-| Auth | POST `/auth/register`, `/auth/login`, `/auth/logout`; GET `/auth/me` | P1 |
-| Công khai | GET `/recipes`, `/recipes/:id`, `/categories`, `/ingredients/suggestions` | P2 |
-| Công thức cá nhân | GET `/me/recipes`, `/me/recipes/:id`; POST `/recipes`; PUT/DELETE `/recipes/:id`; POST `/recipes/:id/submit` | P2 |
-| Upload | POST `/uploads` bằng multipart với trường `image` | P2 |
-| Duyệt món | GET `/admin/recipes`, `/admin/recipes/:id`; POST `/admin/recipes/:id/review` với version/action/reason | P2 |
-| Ẩn món | PATCH `/admin/recipes/:id/visibility` | P2 |
-| Loại món | POST `/admin/categories`; PUT/DELETE `/admin/categories/:id` | P2 |
-| Review | GET/POST `/recipes/:id/reviews`; GET `/admin/reviews`; PATCH `/admin/reviews/:id/comment-status` | P1 |
-| Xếp hạng | GET `/admin/stats/top-recipes` | P1 |
-| Yêu thích | GET `/me/favorites`; PUT/DELETE `/me/favorites/:recipeId` | P3 |
-| Thực đơn | GET/PUT `/me/weekly-menu?weekStart=YYYY-MM-DD` | P3 |
+| Auth | POST `/auth/register`, `/auth/login`, `/auth/logout`; GET `/auth/me` | Huy |
+| Công khai | GET `/recipes`, `/recipes/:id`, `/categories`, `/ingredients/suggestions` | Duy Anh |
+| Công thức cá nhân | GET `/me/recipes`, `/me/recipes/:id`; POST `/recipes`; PUT/DELETE `/recipes/:id`; POST `/recipes/:id/submit` | Duy Anh |
+| Upload | POST `/uploads` bằng multipart với trường `image` | Duy Anh |
+| Duyệt món | GET `/admin/recipes`, `/admin/recipes/:id`; POST `/admin/recipes/:id/review` với version/action/reason | Duy Anh |
+| Ẩn món | PATCH `/admin/recipes/:id/visibility` | Duy Anh |
+| Loại món | POST `/admin/categories`; PUT/DELETE `/admin/categories/:id` | Duy Anh |
+| Review | GET/POST `/recipes/:id/reviews`; GET `/admin/reviews`; PATCH `/admin/reviews/:id/comment-status` | Huy |
+| Xếp hạng | GET `/admin/stats/top-recipes` | Huy |
+| Yêu thích | GET `/me/favorites`; PUT/DELETE `/me/favorites/:recipeId` | Phú |
+| Thực đơn | GET/PUT `/me/weekly-menu?weekStart=YYYY-MM-DD` | Phú |
 
 Chọn phiên đăng nhập qua JWT có thời hạn trong cookie HttpOnly, SameSite Lax, Secure ở production. Web/API cùng origin qua proxy khi local và cùng host khi triển khai. API kiểm Origin của yêu cầu ghi và dùng CSRF token cho thao tác thay đổi dữ liệu. Logout xóa cookie. Bản đầu dùng phiên có thời hạn cố định, giao diện yêu cầu đăng nhập lại khi hết hạn. HTTP client dùng cách gửi cookie thống nhất. Quyết định này thay Bearer token trong tài liệu cũ và đòi hỏi sửa middleware auth sơ bộ.
 
@@ -290,7 +290,7 @@ Tiêu chí Done gồm chạy đúng từ màn hình/API đã giao, quyền và v
 
 Mỗi ngày có đầu ra chung để review và ghép vào main. Người hoàn thành sớm hỗ trợ task đang chặn nhóm.
 
-| Ngày | P1 — Lead và Auth | P2 — Công thức | P3 — UI và Planner | Đầu ra nghiệm thu |
+| Ngày | Huy — Lead và Auth | Duy Anh — Công thức | Phú — UI và Planner | Đầu ra nghiệm thu |
 | --- | --- | --- | --- | --- |
 | 1 · 21/11 | Nối MongoDB, chốt phiên và lỗi API | Chọn món mẫu, chốt schema Recipe | Chạy web, chốt fixture và bố cục | Cả ba chạy được bộ khung và thống nhất dữ liệu mẫu |
 | 2 · 22/11 | Seed tài khoản, viết API đăng nhập | Seed món công khai và món chờ, API danh sách | Dựng form đăng nhập và thẻ món từ fixture | API trả tài khoản và danh sách đúng mẫu |

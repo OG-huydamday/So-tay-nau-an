@@ -18,14 +18,14 @@ Giao diện lấy ảnh món ăn làm điểm nhấn, dùng nền kem và chữ 
 
 | Đường dẫn | Thành phần chính | Phụ trách |
 | --- | --- | --- |
-| `/` | Khám phá, nhập tên hoặc nguyên liệu, bộ lọc loại/thời gian/độ khó, lưới thẻ và phân trang | P3 giao diện, P2 API |
-| `/cong-thuc/:id` | Ảnh, thời gian, độ khó, nguyên liệu, bước làm, đánh giá, lưu và thêm món vào tuần | P2 nội dung món, P1 đánh giá, P3 yêu thích và thực đơn |
-| `/cong-thuc/moi` và `/cong-thuc/:id/sua` | Form ảnh, tên, loại, nguyên liệu và bước động, xem lỗi tại trường | P2 |
-| `/cong-thuc-cua-toi` | Công thức của mình, trạng thái duyệt, mở chi tiết riêng, sửa và xóa | P2 |
-| `/dang-nhap`, `/dang-ky` | Form tài khoản, quay lại trang trước sau xác thực | P1 xác thực, P3 form đăng nhập |
-| `/yeu-thich` | Các món đã lưu, hủy lưu, mở chi tiết | P3 |
-| `/thuc-don` | Bảng 7 ngày × 3 bữa, chọn món, chỉnh khẩu phần, đi chợ | P3 |
-| `/quan-tri` | Hàng đợi duyệt, kiểm tra chi tiết, bình luận, loại món và xếp hạng | P1 bình luận và xếp hạng, P2 công thức và loại món, P3 bố cục |
+| `/` | Khám phá, nhập tên hoặc nguyên liệu, bộ lọc loại/thời gian/độ khó, lưới thẻ và phân trang | Phú giao diện, Duy Anh API |
+| `/cong-thuc/:id` | Ảnh, thời gian, độ khó, nguyên liệu, bước làm, đánh giá, lưu và thêm món vào tuần | Duy Anh nội dung món, Huy đánh giá, Phú yêu thích và thực đơn |
+| `/cong-thuc/moi` và `/cong-thuc/:id/sua` | Form ảnh, tên, loại, nguyên liệu và bước động, xem lỗi tại trường | Duy Anh |
+| `/cong-thuc-cua-toi` | Công thức của mình, trạng thái duyệt, mở chi tiết riêng, sửa và xóa | Duy Anh |
+| `/dang-nhap`, `/dang-ky` | Form tài khoản, quay lại trang trước sau xác thực | Huy xác thực, Phú form đăng nhập |
+| `/yeu-thich` | Các món đã lưu, hủy lưu, mở chi tiết | Phú |
+| `/thuc-don` | Bảng 7 ngày × 3 bữa, chọn món, chỉnh khẩu phần, đi chợ | Phú |
+| `/quan-tri` | Hàng đợi duyệt, kiểm tra chi tiết, bình luận, loại món và xếp hạng | Huy bình luận và xếp hạng, Duy Anh công thức và loại món, Phú bố cục |
 
 ## Wireframe khám phá
 
@@ -70,7 +70,7 @@ CHI TIẾT                          FORM ĐĂNG HOẶC SỬA
 └─────────────────────────┘      └─────────────────────────┘
 ```
 
-Chỉnh khẩu phần ngay chi tiết là phần cộng điểm. P3 dùng tỷ lệ khẩu phần trong từng ô thực đơn để tính đi chợ nhất quán. Với form, gán ID ổn định cho dòng thêm/bớt để giữ focus và kiểm tra quyền ở API khi nhấn lưu. Khi chờ duyệt, trang cá nhân hiển thị trạng thái «Chờ duyệt» kèm hành động xem lại.
+Chỉnh khẩu phần ngay chi tiết là phần cộng điểm. Phú dùng tỷ lệ khẩu phần trong từng ô thực đơn để tính đi chợ nhất quán. Với form, gán ID ổn định cho dòng thêm/bớt để giữ focus và kiểm tra quyền ở API khi nhấn lưu. Khi chờ duyệt, trang cá nhân hiển thị trạng thái «Chờ duyệt» kèm hành động xem lại.
 
 ## Wireframe thực đơn và admin
 
