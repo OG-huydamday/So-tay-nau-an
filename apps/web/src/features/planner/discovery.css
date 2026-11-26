@@ -1,0 +1,139 @@
+.discovery {
+  color: #233328;
+  min-height: 45vh;
+}
+.discovery h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+.discovery h2 {
+  margin-bottom: 0.6em;
+}
+.search-panel,
+.discover-card {
+  background: #fffdf7;
+  border: 1px solid #d7d8c9;
+  border-radius: 16px;
+  padding: 20px;
+}
+.search-panel {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0;
+}
+.discovery label {
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+}
+.discovery input,
+.discovery select,
+.discovery button {
+  font: inherit;
+  border: 1px solid #b7bdad;
+  border-radius: 8px;
+  background: white;
+  color: #254c39;
+  padding: 8px 12px;
+  min-height: 44px;
+}
+.discovery button:hover,
+.save-recipe[aria-pressed="true"] {
+  background: #e3ebdb;
+}
+.discovery button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.search-panel form,
+.filters,
+.chips,
+.card-actions,
+.pager {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.search-panel form label,
+.filters label {
+  flex: 1;
+  min-width: min(170px, 100%);
+}
+.search-panel input,
+.search-panel select {
+  width: 100%;
+}
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 16px;
+  margin: 18px 0;
+}
+.discover-card {
+  overflow: hidden;
+  padding: 0;
+}
+.discover-card > img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+.discover-card > div {
+  padding: 18px;
+}
+.discover-card h3 {
+  font-size: 1.35rem;
+  margin: 8px 0;
+}
+.discover-card p {
+  margin: 0.5em 0;
+}
+.discovery a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.card-actions,
+.pager {
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.recipe-preview > img,
+.recipe-preview li img {
+  max-width: 100%;
+  max-height: 350px;
+  display: block;
+}
+.recipe-preview h2 {
+  font-size: 1.7rem;
+  margin-top: 22px;
+}
+.home-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.home-search label {
+  width: 100%;
+  font-weight: 600;
+}
+.home-search input {
+  padding: 12px;
+  border: 1px solid #b7bdad;
+  border-radius: 9px;
+  font: inherit;
+  max-width: 100%;
+}
+@media (min-width: 761px) and (max-width: 1060px) {
+  .bar {
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+  .bar nav {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: center;
+    gap: 18px;
+  }
+}

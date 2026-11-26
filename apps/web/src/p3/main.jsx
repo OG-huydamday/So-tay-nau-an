@@ -11,6 +11,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth";
+import {Discover, Favorites, RecipePreview} from "../features/planner/Discovery";
+import {writeFavorite} from "../features/planner/useRecipes";
 import { RecipeCards } from "../features/catalog/RecipeCards";
 import { useCarousel } from "../shared/useCarousel";
 import fixture from "../../../../docs/fixtures/kickoff.json";
@@ -78,7 +80,7 @@ function Shell() {
     setOpen(false);
     const id = new URLSearchParams(location.search).get("muc");
     if (id) document.getElementById(id)?.scrollIntoView();
-    else window.scrollTo(0, 0);
+    else if (!location.search || location.pathname !== "/kham-pha") window.scrollTo(0, 0);
   }, [location]);
   return (
     <>
@@ -94,6 +96,8 @@ function Shell() {
             <Icon name="menu" />
           </button>
           <nav className={open ? "open" : ""}>
+            <Link to="/kham-pha">Khám phá</Link>
+            <Link to="/yeu-thich">Yêu thích</Link>
             {sections.map(([id, label]) => (
               <Link key={id} to={"/?muc=" + id}>
                 {label}
@@ -160,6 +164,8 @@ function BenefitCarousel() {
 }
 
 function Hero() {
+  const [name,setName]=useState("");
+  const navigate=useNavigate();
   return (
     <section className="hero">
       <div>
@@ -175,9 +181,14 @@ function Hero() {
           Từ vài nguyên liệu sẵn trong tủ lạnh đến thực đơn cả tuần, tìm cảm
           hứng cho từng bữa cơm nhà.
         </p>
-        <Link className="btn shine" to="/?muc=cong-thuc">
-          Khám phá sổ tay <Icon name="arrow" />
-        </Link>
+        <form className="home-search" onSubmit={event=>{
+          event.preventDefault();
+          navigate(name.trim()?"/kham-pha?q="+encodeURIComponent(name.trim()):"/kham-pha");
+        }}>
+          <label htmlFor="home-recipe-name">Tìm món theo tên</label>
+          <input id="home-recipe-name" placeholder="Ví dụ: trứng chiên" maxLength={120} value={name} onChange={event=>setName(event.target.value)}/>
+          <button className="btn shine">Khám phá sổ tay <Icon name="arrow"/></button>
+        </form>
       </div>
       <BenefitCarousel />
     </section>
@@ -301,6 +312,7 @@ function Home() {
   );
 }
 function Login({ signingUp = false }) {
+  const intent = useLocation().state;
   const { login, register, loading } = useAuth(),
     navigate = useNavigate(),
     emailRef = useRef(null),
@@ -334,7 +346,9 @@ function Login({ signingUp = false }) {
     try {
       if (signingUp) await register(name.trim(), email.trim(), password);
       else await login(email.trim(), password);
-      navigate("/", { replace: true });
+      if(intent?.saveId) await writeFavorite(intent.saveId,true);
+      const target=intent?.returnTo;
+      navigate(typeof target==="string" && /^\/(?:kham-pha|yeu-thich|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)?target:"/",{replace:true});
     } catch (err) {
       report(err.message);
     } finally {
@@ -397,7 +411,7 @@ function Login({ signingUp = false }) {
         <button disabled={busy || loading} className="btn shine">
           {busy ? "Đang xử lý…" : signingUp ? "Đăng ký" : "Đăng nhập"} <Icon name="arrow" />
         </button>
-        <Link className="back" to={signingUp ? "/dang-nhap" : "/dang-ky"}>
+        <Link className="back" state={intent} to={signingUp ? "/dang-nhap" : "/dang-ky"}>
           {signingUp ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký"}
         </Link>
         <Link className="back" to="/">
@@ -414,6 +428,9 @@ export function App() {
         <Routes>
           <Route element={<Shell />}>
             <Route index element={<Home />} />
+            <Route path="kham-pha" element={<Discover />} />
+            <Route path="yeu-thich" element={<Favorites />} />
+            <Route path="cong-thuc/:id" element={<RecipePreview />} />
             <Route path="dang-nhap" element={<Login key="login" />} />
             <Route path="dang-ky" element={<Login key="register" signingUp />} />
             <Route
