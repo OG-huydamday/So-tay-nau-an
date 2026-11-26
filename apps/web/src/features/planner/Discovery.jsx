@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useAuth } from "../../p3/auth";
+import { RecipeReviews } from "../reviews/RecipeReviews";
 import { useResource, useDebounce, writeFavorite } from "./useRecipes";
 import "./discovery.css";
 
@@ -406,6 +407,11 @@ export function RecipePreview() {
               </li>
             ))}
           </ol>
+          <RecipeReviews
+            recipeId={id}
+            initialAverage={r.ratingAverage}
+            initialCount={r.ratingCount}
+          />
         </>
       )}
     </section>

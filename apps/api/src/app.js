@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { config } from './config.js';
 import { loginRouter, protectWrites } from './features/auth/login.js';
 import { catalogRouter } from './features/catalog/list.js';
+import { adminReviewsRouter, reviewsRouter } from './features/reviews/routes.js';
 import { errorHandler, notFound } from './middleware/error.js';
 
 import { favoritesRouter } from './features/planner/favorites.js';
@@ -24,6 +25,8 @@ export function createApp() {
   app.use('/api', protectWrites);
   app.use('/api/auth', loginRouter());
   app.use('/api/me/favorites', favoritesRouter);
+  app.use('/api/recipes/:id/reviews', reviewsRouter);
+  app.use('/api/admin', adminReviewsRouter);
   app.use('/api', discoveryRouter);
   app.use('/api/recipes', catalogRouter);
   app.use(notFound);
