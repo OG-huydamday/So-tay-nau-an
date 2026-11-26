@@ -280,18 +280,10 @@ export async function deleteDraft(recipeId, userId) {
     throw makeError('FORBIDDEN', 'Bạn không có quyền xóa công thức này.', 403);
   }
   if (recipe.moderationStatus === 'pending') {
-    throw makeError('CONFLICT', 'Công thức đang chờ duyệt, không thể xóa bản nháp.', 409);
+    throw makeError('CONFLICT', 'Công thức đang chờ duyệt, không thể xóa.', 409);
   }
-
-  if (recipe.published) {
-    recipe.draft = null;
-    recipe.moderationStatus = 'approved';
-    recipe.rejectReason = undefined;
-    await recipe.save();
-  } else {
-    recipe.deletedAt = new Date();
-    await recipe.save();
-  }
+  recipe.deletedAt = new Date();
+  await recipe.save();
 
   return { deleted: true, id: String(recipe._id) };
 }
