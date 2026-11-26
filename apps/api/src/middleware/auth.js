@@ -1,4 +1,4 @@
-import { readSession } from '../features/auth/login.js';
+import { readSession } from '../features/auth/session.js';
 import { User } from '../models/User.js';
 
 export async function optionalAuth(req, _res, next) {

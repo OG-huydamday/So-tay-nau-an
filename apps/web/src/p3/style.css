@@ -109,6 +109,14 @@ nav a:hover,
 .member {
   font-weight: bold;
 }
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px 12px;
+}
+.account-actions .smallbtn { min-height: 44px; border: 0; }
 .hero {
   background: radial-gradient(ellipse 55% 85% at 0% 100%, #cedbad 0%, #e7edda 48%, transparent 100%);
   padding-inline: max(5%, calc((100% - 1180px) / 2));

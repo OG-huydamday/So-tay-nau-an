@@ -62,7 +62,20 @@ const sections = [
 function Shell() {
   const location = useLocation(),
     [open, setOpen] = useState(false),
-    { session } = useAuth();
+    { session, loading, logout } = useAuth();
+  const [logoutError, setLogoutError] = useState("");
+  const [loggingOut, setLoggingOut] = useState(false);
+  async function endSession() {
+    setLogoutError("");
+    setLoggingOut(true);
+    try {
+      await logout();
+    } catch (error) {
+      setLogoutError(error.message);
+    } finally {
+      setLoggingOut(false);
+    }
+  }
   useEffect(() => {
     setOpen(false);
     const id = new URLSearchParams(location.search).get("muc");
@@ -92,8 +105,12 @@ function Shell() {
             ))}
           </nav>
           {session ? (
-            <span className="member">{session.user.name || "Thành viên"}</span>
-          ) : (
+            <div className="account-actions">
+              <span className="member">{session.user.name || "Thành viên"}</span>
+              <button className="smallbtn" disabled={loggingOut} onClick={endSession}>Đăng xuất</button>
+              {logoutError && <span role="alert" className="error">{logoutError}</span>}
+            </div>
+          ) : !loading && (
             <Link className="smallbtn" to="/dang-nhap">
               Đăng nhập <Icon name="arrow" size={15} />
             </Link>
@@ -294,21 +311,27 @@ function Home() {
     </>
   );
 }
-function Login() {
+function Login({ signingUp = false }) {
   const intent = useLocation().state;
-  const { login } = useAuth(),
+  const { login, register, loading } = useAuth(),
     navigate = useNavigate(),
     emailRef = useRef(null),
     passRef = useRef(null);
   const [email, setEmail] = useState(""),
+    [name, setName] = useState(""),
     [password, setPassword] = useState(""),
     [visible, show] = useState(false),
     [error, report] = useState(""),
     [busy, setBusy] = useState(false);
   async function submit(e) {
     e.preventDefault();
-    if (busy) return;
+    if (busy || loading) return;
     report("");
+    if (signingUp && !name.trim()) {
+      report("Vui lòng nhập tên hiển thị.");
+      e.currentTarget.elements.namedItem("account-name").focus();
+      return;
+    }
     if (!email.trim() || !emailRef.current.validity.valid) {
       report("Vui lòng nhập địa chỉ email hợp lệ.");
       emailRef.current.focus();
@@ -321,7 +344,8 @@ function Login() {
     }
     setBusy(true);
     try {
-      await login(email.trim(), password);
+      if (signingUp) await register(name.trim(), email.trim(), password);
+      else await login(email.trim(), password);
       if(intent?.saveId) await writeFavorite(intent.saveId,true);
       const target=intent?.returnTo;
       navigate(typeof target==="string" && /^\/(?:kham-pha|yeu-thich|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)?target:"/",{replace:true});
@@ -345,7 +369,12 @@ function Login() {
         <p>Những món ngon bạn muốn lưu lại bắt đầu từ đây.</p>
       </aside>
       <form onSubmit={submit} noValidate>
-        <h1>Đăng nhập</h1>
+        <h1>{signingUp ? "Đăng ký" : "Đăng nhập"}</h1>
+        {signingUp && <>
+          <label htmlFor="account-name">Tên hiển thị</label>
+          <input id="account-name" autoComplete="name" maxLength={60} required
+            value={name} onChange={e => setName(e.target.value)} />
+        </>}
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -362,7 +391,7 @@ function Login() {
           <input
             id="pw"
             type={visible ? "text" : "password"}
-            autoComplete="current-password"
+            autoComplete={signingUp ? "new-password" : "current-password"}
             required
             ref={passRef}
             value={password}
@@ -379,9 +408,12 @@ function Login() {
         <p role="alert" className="error">
           {error}
         </p>
-        <button disabled={busy} className="btn shine">
-          {busy ? "Đang đăng nhập…" : "Đăng nhập"} <Icon name="arrow" />
+        <button disabled={busy || loading} className="btn shine">
+          {busy ? "Đang xử lý…" : signingUp ? "Đăng ký" : "Đăng nhập"} <Icon name="arrow" />
         </button>
+        <Link className="back" state={intent} to={signingUp ? "/dang-nhap" : "/dang-ky"}>
+          {signingUp ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký"}
+        </Link>
         <Link className="back" to="/">
           ← Về trang chủ
         </Link>
@@ -399,7 +431,8 @@ export function App() {
             <Route path="kham-pha" element={<Discover />} />
             <Route path="yeu-thich" element={<Favorites />} />
             <Route path="cong-thuc/:id" element={<RecipePreview />} />
-            <Route path="dang-nhap" element={<Login />} />
+            <Route path="dang-nhap" element={<Login key="login" />} />
+            <Route path="dang-ky" element={<Login key="register" signingUp />} />
             <Route
               path="*"
               element={

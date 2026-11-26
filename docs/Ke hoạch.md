@@ -10,11 +10,11 @@ Người dùng tìm món theo tên, nguyên liệu, loại món, thời gian ho�
 
 | Vai trò | Phụ trách | Việc đầu tiên và cách kiểm tra |
 | --- | --- | --- |
-| **P1 — Trưởng nhóm** | Cơ sở dữ liệu, tài khoản, quyền truy cập, đánh giá và tích hợp | Xác nhận MongoDB chạy, tạo dữ liệu tài khoản demo và nối API đăng nhập. Kiểm một lần đăng nhập đúng và một lần sai. |
-| **P2 — Công thức** | Tìm kiếm, đăng/sửa/xóa, ảnh, duyệt công thức và loại món | Chốt dữ liệu món mẫu và API danh sách món đã duyệt. Mở một món chi tiết bằng ID, xác nhận món chờ duyệt không xuất hiện công khai. |
-| **P3 — Giao diện và thực đơn** | Layout chung, đăng nhập/khám phá ban đầu, yêu thích, thực đơn và đi chợ | Dựng form đăng nhập và màn danh sách từ JSON mẫu. Nối API khi P1/P2 có bản chạy và thử hiển thị lỗi khi đăng nhập sai. |
+| **Huy — Trưởng nhóm** | Cơ sở dữ liệu, tài khoản, quyền truy cập, đánh giá và tích hợp | Xác nhận MongoDB chạy, tạo dữ liệu tài khoản demo và nối API đăng nhập. Kiểm một lần đăng nhập đúng và một lần sai. |
+| **Duy Anh — Công thức** | Tìm kiếm, đăng/sửa/xóa, ảnh, duyệt công thức và loại món | Chốt dữ liệu món mẫu và API danh sách món đã duyệt. Mở một món chi tiết bằng ID, xác nhận món chờ duyệt không xuất hiện công khai. |
+| **Phú — Giao diện và thực đơn** | Layout chung, đăng nhập/khám phá ban đầu, yêu thích, thực đơn và đi chợ | Dựng form đăng nhập và màn danh sách từ JSON mẫu. Nối API khi Huy/Duy Anh có bản chạy và thử hiển thị lỗi khi đăng nhập sai. |
 
-Điền tên thật cho từng vai trò trong buổi đầu. P1 cùng P2 chốt định dạng dữ liệu cho P3. Vòng kiểm tra chéo gồm P2 xem việc của P1, P3 xem việc của P2 và P1 xem việc của P3.
+Huy cùng Duy Anh chốt định dạng dữ liệu cho Phú. Vòng kiểm tra chéo gồm Duy Anh xem việc của Huy, Phú xem việc của Duy Anh và Huy xem việc của Phú.
 
 ## Hướng triển khai
 

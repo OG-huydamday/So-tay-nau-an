@@ -30,7 +30,7 @@ function Status({ resource }) {
   return null;
 }
 function useFavorites() {
-  const { session, restoring } = useAuth();
+  const { session, loading: restoring } = useAuth();
   const location = useLocation(),
     navigate = useNavigate();
   const [revision, refresh] = useState(0),

@@ -1,22 +1,22 @@
 import { randomBytes } from 'node:crypto';
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 import { config } from '../../config.js';
 import { User } from '../../models/User.js';
+import { requireAuth } from '../../middleware/auth.js';
+import { clearSession, readSession, startSession } from './session.js';
 
-const sessionDuration = 8 * 60 * 60 * 1000;
 const dummyHash = bcrypt.hashSync(randomBytes(32).toString('hex'), 10);
 
-export function readSession(req) {
-  const cookie = req.headers.cookie?.split(';').map(value => value.trim())
-    .find(value => value.startsWith('session='));
-  if (!cookie) return null;
-  try {
-    return jwt.verify(cookie.slice('session='.length), config.jwtSecret, { algorithms: ['HS256'] });
-  } catch {
-    return null;
-  }
+const registration = z.object({
+  name: z.string().trim().min(1).max(60),
+  email: z.string().trim().toLowerCase().pipe(z.email().max(254)),
+  password: z.string().min(8).refine(password => !bcrypt.truncates(password)),
+});
+
+function publicUser(user) {
+  return { id: user.id, name: user.name, email: user.email, role: user.role };
 }
 
 export function protectWrites(req, res, next) {
@@ -25,8 +25,8 @@ export function protectWrites(req, res, next) {
   if (origin && origin !== config.clientUrl) {
     return res.status(403).json({ code: 'INVALID_ORIGIN', message: 'Nguồn yêu cầu không hợp lệ.' });
   }
-  // Login starts a new session and accepts JSON only.
-  if (req.method === 'POST' && req.path === '/auth/login') return next();
+  // These routes create a fresh session and require JSON.
+  if (req.method === 'POST' && ['/auth/login', '/auth/register'].includes(req.path)) return next();
   const session = readSession(req);
   if (session && (!session.csrf || req.get('x-csrf-token') !== session.csrf)) {
     return res.status(403).json({ code: 'INVALID_CSRF', message: 'Mã bảo vệ yêu cầu chưa đúng.' });
@@ -38,7 +38,7 @@ export function loginRouter() {
   const router = Router();
   const attempts = new Map();
   let resetAt = 0;
-  router.post('/login', async (req, res) => {
+  function limitAttempts(req, res, next) {
     const now = Date.now();
     if (now >= resetAt) {
       attempts.clear();
@@ -50,6 +50,24 @@ export function loginRouter() {
       return res.status(429).json({ code: 'RATE_LIMITED', message: 'Vui lòng thử lại sau.' });
     }
     attempts.set(req.ip, count + 1);
+    next();
+  }
+  router.use((_req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+  });
+  router.post('/register', limitAttempts, async (req, res) => {
+    const input = registration.safeParse(req.body);
+    if (!req.is('application/json') || !input.success) {
+      return res.status(400).json({ code: 'INVALID_INPUT', message: 'Nhập tên (tối đa 60 ký tự), email hợp lệ và mật khẩu từ 8 ký tự, tối đa 72 byte.' });
+    }
+    const { name, email, password } = input.data;
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, passwordHash });
+    startSession(res, user);
+    res.status(201).json({ user: publicUser(user) });
+  });
+  router.post('/login', limitAttempts, async (req, res) => {
     const { email, password } = req.body || {};
     if (!req.is('application/json') || typeof email !== 'string' || !email.trim()
       || typeof password !== 'string' || !password) {
@@ -60,13 +78,15 @@ export function loginRouter() {
     if (!matches || !user) {
       return res.status(401).json({ code: 'INVALID_CREDENTIALS', message: 'Email hoặc mật khẩu chưa đúng.' });
     }
-    const csrf = randomBytes(32).toString('hex');
-    const token = jwt.sign({ csrf }, config.jwtSecret, { subject: user.id, expiresIn: '8h' });
-    const options = { maxAge: sessionDuration, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/' };
-    res.cookie('session', token, { ...options, httpOnly: true });
-    res.cookie('csrf', csrf, options);
-    res.set('Cache-Control', 'no-store');
-    res.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    startSession(res, user);
+    res.json({ user: publicUser(user) });
+  });
+  router.get('/me', requireAuth, (req, res) => {
+    res.json({ user: publicUser(req.user) });
+  });
+  router.post('/logout', (_req, res) => {
+    clearSession(res);
+    res.status(204).end();
   });
   return router;
 }
