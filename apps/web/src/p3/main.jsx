@@ -14,6 +14,7 @@ import { AuthProvider, useAuth } from "./auth";
 import {Discover, Favorites, RecipePreview} from "../features/planner/Discovery";
 import {writeFavorite} from "../features/planner/useRecipes";
 import { RecipeCards } from "../features/catalog/RecipeCards";
+import { AdminReviewsPage } from "../features/reviews/AdminReviewsPage";
 import { useCarousel } from "../shared/useCarousel";
 import fixture from "../../../../docs/fixtures/kickoff.json";
 import "./style.css";
@@ -107,6 +108,9 @@ function Shell() {
           {session ? (
             <div className="account-actions">
               <span className="member">{session.user.name || "Thành viên"}</span>
+              {session.user.role === "admin" && (
+                <Link className="smallbtn" to="/quan-tri/danh-gia">Quản trị</Link>
+              )}
               <button className="smallbtn" disabled={loggingOut} onClick={endSession}>Đăng xuất</button>
               {logoutError && <span role="alert" className="error">{logoutError}</span>}
             </div>
@@ -348,7 +352,7 @@ function Login({ signingUp = false }) {
       else await login(email.trim(), password);
       if(intent?.saveId) await writeFavorite(intent.saveId,true);
       const target=intent?.returnTo;
-      navigate(typeof target==="string" && /^\/(?:kham-pha|yeu-thich|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)?target:"/",{replace:true});
+      navigate(typeof target==="string" && /^\/(?:kham-pha|yeu-thich|quan-tri\/danh-gia|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)?target:"/",{replace:true});
     } catch (err) {
       report(err.message);
     } finally {
@@ -433,6 +437,7 @@ export function App() {
             <Route path="cong-thuc/:id" element={<RecipePreview />} />
             <Route path="dang-nhap" element={<Login key="login" />} />
             <Route path="dang-ky" element={<Login key="register" signingUp />} />
+            <Route path="quan-tri/danh-gia" element={<AdminReviewsPage />} />
             <Route
               path="*"
               element={
