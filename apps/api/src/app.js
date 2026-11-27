@@ -9,6 +9,8 @@ import { errorHandler, notFound } from './middleware/error.js';
 
 import { favoritesRouter } from './features/planner/favorites.js';
 import { discoveryRouter } from './features/catalog/discovery.js';
+import { meRecipesRouter, recipesWriteRouter } from './features/recipes/recipe.routes.js';
+import { uploadsRouter, UPLOAD_DIR } from './features/uploads/upload.routes.js';
 
 import {weeklyRouter} from './features/planner/weekly.js';
 
@@ -31,7 +33,11 @@ export function createApp() {
   app.use('/api/admin', adminReviewsRouter);
   app.use('/api', discoveryRouter);
   app.use('/api/recipes', catalogRouter);
-  app.use('/api/me/weekly-menu',weeklyRouter);
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  app.use('/api/me/recipes', meRecipesRouter);
+  app.use('/api/recipes', recipesWriteRouter);
+  app.use('/api/uploads', uploadsRouter);
+  app.use('/api/me/weekly-menu', weeklyRouter);
   app.use(notFound);
   app.use(errorHandler);
   return app;
