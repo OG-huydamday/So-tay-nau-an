@@ -10,6 +10,8 @@ import { errorHandler, notFound } from './middleware/error.js';
 import { favoritesRouter } from './features/planner/favorites.js';
 import { discoveryRouter } from './features/catalog/discovery.js';
 
+import {weeklyRouter} from './features/planner/weekly.js';
+
 export function createApp() {
   const app = express();
   app.set('trust proxy', 1);
@@ -29,6 +31,7 @@ export function createApp() {
   app.use('/api/admin', adminReviewsRouter);
   app.use('/api', discoveryRouter);
   app.use('/api/recipes', catalogRouter);
+  app.use('/api/me/weekly-menu',weeklyRouter);
   app.use(notFound);
   app.use(errorHandler);
   return app;

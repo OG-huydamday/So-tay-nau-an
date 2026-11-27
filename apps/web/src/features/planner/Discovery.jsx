@@ -382,6 +382,7 @@ export function RecipePreview() {
           <p>
             {r.totalMinutes} phút · {r.servings} phần · {r.difficulty}
           </p>
+          <Link to={"/thuc-don?mon="+encodeURIComponent(id)}>Thêm vào thực đơn tuần</Link>
           <Save id={id} fav={fav} />
           {fav.error && <p role="alert">{fav.error}</p>}
           {fav.list.error && fav.list.error.status !== 401 && (
