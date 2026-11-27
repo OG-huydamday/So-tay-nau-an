@@ -11,6 +11,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth";
+import {WeeklyMenuPage} from "../features/planner/WeeklyMenu";
 import {Discover, Favorites, RecipePreview} from "../features/planner/Discovery";
 import {writeFavorite} from "../features/planner/useRecipes";
 import { RecipeCards } from "../features/catalog/RecipeCards";
@@ -98,6 +99,7 @@ function Shell() {
           </button>
           <nav className={open ? "open" : ""}>
             <Link to="/kham-pha">Khám phá</Link>
+            <Link to="/thuc-don">Thực đơn tuần</Link>
             <Link to="/yeu-thich">Yêu thích</Link>
             {sections.map(([id, label]) => (
               <Link key={id} to={"/?muc=" + id}>
@@ -352,7 +354,13 @@ function Login({ signingUp = false }) {
       else await login(email.trim(), password);
       if(intent?.saveId) await writeFavorite(intent.saveId,true);
       const target=intent?.returnTo;
-      navigate(typeof target==="string" && /^\/(?:kham-pha|yeu-thich|quan-tri\/danh-gia|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)?target:"/",{replace:true});
+      navigate(
+        typeof target === "string" &&
+          /^\/(?:thuc-don|kham-pha|yeu-thich|quan-tri\/danh-gia|cong-thuc\/[a-f0-9]{24})(?:\?|$)/.test(target)
+          ? target
+          : "/",
+        { replace: true }
+      );
     } catch (err) {
       report(err.message);
     } finally {
@@ -432,6 +440,7 @@ export function App() {
         <Routes>
           <Route element={<Shell />}>
             <Route index element={<Home />} />
+            <Route path="thuc-don" element={<WeeklyMenuPage />} />
             <Route path="kham-pha" element={<Discover />} />
             <Route path="yeu-thich" element={<Favorites />} />
             <Route path="cong-thuc/:id" element={<RecipePreview />} />

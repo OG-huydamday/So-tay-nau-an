@@ -1,0 +1,63 @@
+.week-page h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+.week-page button,
+.week-page input,
+.week-page select {
+  font: inherit;
+  min-height: 42px;
+}
+.week-page button:not(.btn) {
+  padding: 4px 10px;
+  border: 1px solid #b6bfae;
+  border-radius: 8px;
+  background: #fffdf8;
+}
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(245px, 100%), 1fr));
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  margin: 20px 0;
+}
+.week-day {
+  padding: 14px;
+  background: #f4f2e8;
+  border-radius: 14px;
+  min-width: 0;
+}
+.week-day h2,
+.week-shopping h2 {
+  font-size: 1.65rem;
+}
+.week-cell {
+  padding: 10px 0;
+  border-top: 1px solid #d4d5c7;
+}
+.week-cell label,
+.week-shopping label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.week-cell strong,
+.week-cell button {
+  display: block;
+  margin: 4px 0;
+}
+.week-picker input {
+  width: 100%;
+}
+.week-picker ul {
+  padding-left: 1em;
+}
+.week-shopping {
+  margin-top: 24px;
+}
+.week-shopping input {
+  min-height: 24px;
+}
+.week-shopping label {
+  padding: 5px 0;
+}

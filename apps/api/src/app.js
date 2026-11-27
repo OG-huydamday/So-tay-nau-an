@@ -12,6 +12,8 @@ import { discoveryRouter } from './features/catalog/discovery.js';
 import { meRecipesRouter, recipesWriteRouter } from './features/recipes/recipe.routes.js';
 import { uploadsRouter, UPLOAD_DIR } from './features/uploads/upload.routes.js';
 
+import {weeklyRouter} from './features/planner/weekly.js';
+
 export function createApp() {
   const app = express();
   app.set('trust proxy', 1);
@@ -35,6 +37,7 @@ export function createApp() {
   app.use('/api/me/recipes', meRecipesRouter);
   app.use('/api/recipes', recipesWriteRouter);
   app.use('/api/uploads', uploadsRouter);
+  app.use('/api/me/weekly-menu', weeklyRouter);
   app.use(notFound);
   app.use(errorHandler);
   return app;
