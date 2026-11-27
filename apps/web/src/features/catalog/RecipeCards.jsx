@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useCarousel } from "../../shared/useCarousel";
 
 export function RecipeCards({ items }) {
@@ -37,6 +38,9 @@ export function RecipeCards({ items }) {
               {recipe.prepMinutes != null && recipe.cookMinutes != null && <p className="recipe-meta">
                 {recipe.prepMinutes + recipe.cookMinutes} phút · {recipe.difficulty} · {recipe.servings} phần
               </p>}
+              <Link className="recipe-sample-link" to={"/kham-pha?q=" + encodeURIComponent(recipe.title)}>
+                Tìm công thức này →
+              </Link>
             </div>
           </article>
         ))}

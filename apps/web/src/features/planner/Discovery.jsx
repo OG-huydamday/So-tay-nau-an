@@ -94,12 +94,20 @@ function Cards({ items, fav, showMatch = false }) {
     <div className="discover-grid">
       {items.map((r) => (
         <article key={r.id} className="discover-card">
-          {r.image && <img src={r.image} alt={r.title} loading="lazy" />}
+          {r.image ? (
+            <img src={r.image} alt={r.title} loading="lazy" />
+          ) : (
+            <div className="recipe-thumb-placeholder" aria-hidden="true">
+              <span>🍲 Bếp Nhà</span>
+              <small>Chưa có ảnh</small>
+            </div>
+          )}
           <div>
             <small>
               {r.category?.name} ·{" "}
               {r.totalMinutes ?? r.prepMinutes + r.cookMinutes} phút ·{" "}
               {r.difficulty}
+              {r.ratingCount > 0 ? ` · ★ ${r.ratingAverage}` : ""}
             </small>
             <h3>
               <Link to={"/cong-thuc/" + r.id}>{r.title}</Link>
@@ -381,9 +389,14 @@ export function RecipePreview() {
           {r.image && <img src={r.image} alt={r.title} />}
           <p>
             {r.totalMinutes} phút · {r.servings} phần · {r.difficulty}
+            {r.ratingCount > 0 ? ` · ★ ${r.ratingAverage} (${r.ratingCount} đánh giá)` : ""}
           </p>
-          <Link to={"/thuc-don?mon="+encodeURIComponent(id)}>Thêm vào thực đơn tuần</Link>
-          <Save id={id} fav={fav} />
+          <div className="preview-actions">
+            <Link className="plan-action-btn" to={"/thuc-don?mon=" + encodeURIComponent(id)}>
+              + Thêm vào thực đơn tuần
+            </Link>
+            <Save id={id} fav={fav} />
+          </div>
           {fav.error && <p role="alert">{fav.error}</p>}
           {fav.list.error && fav.list.error.status !== 401 && (
             <Status resource={fav.list} />
