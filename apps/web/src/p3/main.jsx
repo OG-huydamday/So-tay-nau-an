@@ -98,14 +98,10 @@ function Shell() {
             <Icon name="menu" />
           </button>
           <nav className={open ? "open" : ""}>
+            <Link to="/">Trang chủ</Link>
             <Link to="/kham-pha">Khám phá</Link>
             <Link to="/thuc-don">Thực đơn tuần</Link>
             <Link to="/yeu-thich">Yêu thích</Link>
-            {sections.map(([id, label]) => (
-              <Link key={id} to={"/?muc=" + id}>
-                {label}
-              </Link>
-            ))}
           </nav>
           {session ? (
             <div className="account-actions">
@@ -130,7 +126,13 @@ function Shell() {
         <div className="wrap foot">
           <Brand />
           <span>Sổ tay dành cho căn bếp Việt</span>
-          <Link to="/?muc=faq">Hỏi đáp ↗</Link>
+          <div className="foot-links">
+            {sections.map(([id, label]) => (
+              <Link key={id} to={"/?muc=" + id}>
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
       </footer>
     </>
@@ -450,9 +452,18 @@ export function App() {
             <Route
               path="*"
               element={
-                <Link className="btn" to="/">
-                  Về trang chủ
-                </Link>
+                <section className="wrap section not-found-box">
+                  <h1>Không tìm thấy trang này</h1>
+                  <p>Đường dẫn bạn mở không tồn tại hoặc đã được chuyển đi.</p>
+                  <div className="not-found-actions">
+                    <Link className="btn shine" to="/">
+                      ← Về trang chủ
+                    </Link>
+                    <Link className="btn light" to="/kham-pha">
+                      Khám phá món ngon
+                    </Link>
+                  </div>
+                </section>
               }
             />
           </Route>
