@@ -144,9 +144,11 @@ test('gửi đánh giá trong transaction, chống trùng đồng thời, ẩn b
   const statuses = concurrent.map(r => r.status).sort();
   assert.deepEqual(statuses, [201, 409]);
 
+  let firstWonStars = 0;
   for (const res of concurrent) {
     const body = await res.json();
     if (res.status === 201) {
+      firstWonStars = body.review.stars;
       createdReviewIds.push(body.review.id);
     } else {
       assert.equal(body.code, 'REVIEW_ALREADY_EXISTS');
@@ -163,7 +165,7 @@ test('gửi đánh giá trong transaction, chống trùng đồng thời, ẩn b
   const secondBody = await secondRes.json();
   createdReviewIds.push(secondBody.review.id);
 
-  const expectedSum = targetRecipeSnapshot.ratingSum + 8;
+  const expectedSum = targetRecipeSnapshot.ratingSum + firstWonStars + 3;
   const expectedCount = targetRecipeSnapshot.ratingCount + 2;
   const expectedAvg = Math.round((expectedSum / expectedCount) * 100) / 100;
   assert.equal(secondBody.ratingCount, expectedCount);
