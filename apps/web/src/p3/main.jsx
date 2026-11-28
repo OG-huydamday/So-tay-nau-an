@@ -15,6 +15,7 @@ import {WeeklyMenuPage} from "../features/planner/WeeklyMenu";
 import {Discover, Favorites, RecipePreview} from "../features/planner/Discovery";
 import {writeFavorite} from "../features/planner/useRecipes";
 import { RecipeCards } from "../features/catalog/RecipeCards";
+import { AdminModerationPage } from "../features/admin/AdminModerationPage";
 import { AdminReviewsPage } from "../features/reviews/AdminReviewsPage";
 import { useCarousel } from "../shared/useCarousel";
 import fixture from "../../../../docs/fixtures/kickoff.json";
@@ -107,7 +108,7 @@ function Shell() {
             <div className="account-actions">
               <span className="member">{session.user.name || "Thành viên"}</span>
               {session.user.role === "admin" && (
-                <Link className="smallbtn" to="/quan-tri/danh-gia">Quản trị</Link>
+                <Link className="smallbtn" to="/quan-tri/cong-thuc">Quản trị</Link>
               )}
               <button className="smallbtn" disabled={loggingOut} onClick={endSession}>Đăng xuất</button>
               {logoutError && <span role="alert" className="error">{logoutError}</span>}
@@ -448,6 +449,7 @@ export function App() {
             <Route path="cong-thuc/:id" element={<RecipePreview />} />
             <Route path="dang-nhap" element={<Login key="login" />} />
             <Route path="dang-ky" element={<Login key="register" signingUp />} />
+            <Route path="quan-tri/cong-thuc" element={<AdminModerationPage />} />
             <Route path="quan-tri/danh-gia" element={<AdminReviewsPage />} />
             <Route
               path="*"

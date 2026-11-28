@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../p3/auth";
+import { AdminShell, adminFetch } from "../admin/AdminShell";
 import "./reviews.css";
 
-function getCsrfToken() {
-  const match = document.cookie
-    .split("; ")
-    .find((entry) => entry.startsWith("csrf="));
-  return match ? match.slice("csrf=".length) : "";
-}
-
 export function AdminReviewsPage() {
-  const { session, loading: authLoading } = useAuth();
-  const location = useLocation();
+  const { session } = useAuth();
   const [tab, setTab] = useState("reviews");
 
   // State cho bình luận
@@ -39,14 +32,8 @@ export function AdminReviewsPage() {
     const params = new globalThis.URLSearchParams({ page: "1", limit: "24" });
     if (statusFilter) params.set("commentStatus", statusFilter);
 
-    globalThis
-      .fetch(`/api/admin/reviews?${params}`, {
-        credentials: "same-origin",
-        signal: controller.signal,
-      })
-      .then(async (res) => {
-        const data = await res.json().catch(() => null);
-        if (!res.ok || !data) throw new Error(data?.message || "Chưa tải được bình luận.");
+    adminFetch(`/api/admin/reviews?${params}`, { signal: controller.signal })
+      .then((data) => {
         if (!controller.signal.aborted) setReviews(data.items || []);
       })
       .catch((err) => {
@@ -67,14 +54,10 @@ export function AdminReviewsPage() {
     setTopLoading(true);
     setTopError("");
 
-    globalThis
-      .fetch("/api/admin/stats/top-recipes?page=1&limit=20", {
-        credentials: "same-origin",
-        signal: controller.signal,
-      })
-      .then(async (res) => {
-        const data = await res.json().catch(() => null);
-        if (!res.ok || !data) throw new Error(data?.message || "Chưa tải được bảng xếp hạng.");
+    adminFetch("/api/admin/stats/top-recipes?page=1&limit=20", {
+      signal: controller.signal,
+    })
+      .then((data) => {
         if (!controller.signal.aborted) setTopRecipes(data.items || []);
       })
       .catch((err) => {
@@ -96,20 +79,10 @@ export function AdminReviewsPage() {
     setReviewsError("");
 
     try {
-      const res = await globalThis.fetch(
+      const data = await adminFetch(
         `/api/admin/reviews/${encodeURIComponent(review.id)}/comment-status`,
-        {
-          method: "PATCH",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": getCsrfToken(),
-          },
-          body: JSON.stringify({ commentStatus: nextStatus }),
-        },
+        { method: "PATCH", body: { commentStatus: nextStatus } },
       );
-      const data = await res.json().catch(() => null);
-      if (!res.ok || !data) throw new Error(data?.message || "Không thể cập nhật trạng thái.");
 
       setReviews((prev) =>
         prev.map((item) =>
@@ -123,46 +96,8 @@ export function AdminReviewsPage() {
     }
   }
 
-  if (authLoading) {
-    return (
-      <section className="wrap section">
-        <p role="status">Đang kiểm tra quyền truy cập…</p>
-      </section>
-    );
-  }
-
-  if (!session) {
-    return (
-      <section className="wrap section">
-        <h1>Quản trị Đánh giá &amp; Xếp hạng</h1>
-        <p>
-          Bạn cần{" "}
-          <Link to="/dang-nhap" state={{ returnTo: location.pathname }}>
-            đăng nhập
-          </Link>{" "}
-          bằng tài khoản quản trị viên.
-        </p>
-      </section>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <section className="wrap section">
-        <h1>Không có quyền truy cập</h1>
-        <p role="alert" className="error">
-          Chỉ quản trị viên mới được phép kiểm duyệt bình luận và xem thống kê quản trị.
-        </p>
-        <Link className="btn" to="/">
-          ← Về trang chủ
-        </Link>
-      </section>
-    );
-  }
-
   return (
-    <section className="wrap section admin-reviews">
-      <h1>Quản trị Đánh giá &amp; Xếp hạng</h1>
+    <AdminShell title="Quản trị Đánh giá & Xếp hạng" className="admin-reviews">
       <div className="admin-tabs" role="group" aria-label="Chọn mục quản trị">
         <button
           type="button"
@@ -318,6 +253,6 @@ export function AdminReviewsPage() {
           )}
         </div>
       )}
-    </section>
+    </AdminShell>
   );
 }
