@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Recipe } from '../../models/Recipe.js';
 import { Category } from '../../models/Category.js';
 import { toOwnerView } from './ownerView.js';
+import { uploadedImageExists } from '../uploads/uploadedImage.js';
 import {
   DIFFICULTIES,
   UNITS,
@@ -88,7 +89,24 @@ function normalizeSteps(steps) {
   });
 }
 
-async function buildDraftPatch(body = {}) {
+async function assertUploadedImage(value, label, knownImages) {
+  if (value === null || value === undefined || knownImages.has(value)) return;
+  if (!(await uploadedImageExists(value))) {
+    throw makeError('INVALID_INPUT', `${label} phải là ảnh đã tải lên qua /api/uploads.`, 400);
+  }
+}
+
+function collectImages(content) {
+  const images = new Set();
+  if (!content) return images;
+  if (content.image) images.add(content.image);
+  for (const step of content.steps ?? []) {
+    if (step.image) images.add(step.image);
+  }
+  return images;
+}
+
+async function buildDraftPatch(body = {}, knownImages = new Set()) {
   const patch = {};
 
   if (typeof body.title === 'string') {
@@ -150,6 +168,15 @@ async function buildDraftPatch(body = {}) {
     patch.tags = body.tags
       .map((t) => (typeof t === 'string' ? t.trim().toLowerCase() : ''))
       .filter(Boolean);
+  }
+
+  if (patch.image !== undefined) {
+    await assertUploadedImage(patch.image, 'Ảnh món', knownImages);
+  }
+  if (patch.steps) {
+    await Promise.all(patch.steps.map((step, index) => (
+      assertUploadedImage(step.image, `Ảnh bước ${index + 1}`, knownImages)
+    )));
   }
 
   return patch;
@@ -248,7 +275,8 @@ export async function updateDraft(recipeId, userId, payload) {
     throw makeError('CONFLICT', 'Công thức đang chờ duyệt, không thể sửa bản nháp.', 409);
   }
 
-  const patch = await buildDraftPatch(payload);
+  const knownImages = new Set([...collectImages(recipe.draft), ...collectImages(recipe.published)]);
+  const patch = await buildDraftPatch(payload, knownImages);
   let base = {};
   if (recipe.draft) base = recipe.draft.toObject();
   else if (recipe.published) base = recipe.published.toObject();

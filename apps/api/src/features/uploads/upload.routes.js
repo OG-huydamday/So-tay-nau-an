@@ -6,8 +6,9 @@ import { Router } from 'express';
 import multer from 'multer';
 import { requireAuth } from '../../middleware/auth.js';
 import { detectImageMime } from './imageSignature.js';
+import { UPLOAD_DIR } from './uploadedImage.js';
 
-export const UPLOAD_DIR = path.resolve(import.meta.dirname, '../../../uploads');
+export { UPLOAD_DIR };
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const ALLOWED_MIME = new Map([
