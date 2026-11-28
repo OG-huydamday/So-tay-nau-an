@@ -13,6 +13,7 @@ import { meRecipesRouter, recipesWriteRouter } from './features/recipes/recipe.r
 import { uploadsRouter, UPLOAD_DIR } from './features/uploads/upload.routes.js';
 
 import {weeklyRouter} from './features/planner/weekly.js';
+import { adminRecipesRouter } from './features/catalog/moderation.routes.js';
 
 export function createApp() {
   const app = express();
@@ -38,6 +39,7 @@ export function createApp() {
   app.use('/api/recipes', recipesWriteRouter);
   app.use('/api/uploads', uploadsRouter);
   app.use('/api/me/weekly-menu', weeklyRouter);
+  app.use('/api/admin/recipes', adminRecipesRouter);
   app.use(notFound);
   app.use(errorHandler);
   return app;
